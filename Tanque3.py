@@ -271,7 +271,7 @@ while True:
         
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
-            sys.exit(0) 
+            sys.exit(0)          
        
 #Pantalla principal         
     if loop_ppal:
@@ -339,8 +339,39 @@ while True:
 # Leer actividad de mouse
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
-        print(mouse) 
-               
+        #print(mouse) 
+    
+
+# Click botón control        
+        if 250 > mouse[0] > 80 and 711 > mouse[1] > 660:
+           
+           if click[0] == 1: 
+                loop_ppal=False
+                loop_ppal_medicion=False
+                loop_sec_medicion=False
+                loop_sec=False  
+                loop_control_cerrado=True
+                pantalla_errores=False
+                autenticacion=False                                
+                pygame.event.clear()
+                time.sleep(0.5)
+                pygame.event.clear()
+                
+# Click botón fallos
+        elif 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
+           
+           if click[0] == 1: 
+                loop_ppal=False
+                loop_ppal_medicion=False
+                loop_sec_medicion=False
+                loop_sec=False  
+                loop_control_cerrado=False
+                pantalla_errores=True
+                autenticacion=False               
+                pygame.event.clear()
+                time.sleep(0.5)
+                pygame.event.clear()
+                
 # Botones lado derecho
 
         # Mostrar multimetro
@@ -382,18 +413,8 @@ while True:
               v_motor = 1
                 
         if v_motor == 1:
-           ventana.blit(caja_motor, coordenada_p_id) 
-        
-# Click botón control        
-        if 250 > mouse[0] > 80 and 711 > mouse[1] > 660:
-           if click[0] == 1: 
-                loop_ppal=False
-                loop_ppal_medicion=False
-                loop_sec_medicion=False
-                loop_sec=False  
-                loop_control_cerrado=True
-                pantalla_errores=False
-                autenticacion=False  
+           ventana.blit(caja_motor, coordenada_p_id)
+
                
 # Condición para cerrar sesión
         if 152 > mouse[0] > 100 and 60 > mouse[1] > 10:
@@ -492,10 +513,11 @@ while True:
         ventana.blit(bmotor, (900, 80))
         ventana.blit(bcontrol, (80, 660))
         ventana.blit(bfallos, (300, 660))
-
-# Leer actividad de mouse            
+        
+# Leer actividad de mouse
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
+        #print(mouse)
         
         # Click botón control
         if 250 > mouse[0] > 80 and 711 > mouse[1] > 660:
@@ -506,10 +528,25 @@ while True:
                 loop_sec=False  
                 pantalla_errores=False
                 autenticacion=False 
-                loop_control_cerrado=True
-                time.sleep( 0.4 )
-                
-                      
+                loop_control_cerrado=True                
+                pygame.event.clear()
+                time.sleep(0.5)
+                pygame.event.clear()
+        
+        # Click botón fallos
+        elif 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
+           if click[0] == 1: 
+                loop_ppal=False
+                loop_ppal_medicion=False
+                loop_sec_medicion=False
+                loop_sec=False  
+                pantalla_errores=True
+                autenticacion=False 
+                loop_control_cerrado=False                
+                pygame.event.clear()
+                time.sleep(0.5)
+                pygame.event.clear()
+
 # Botones lado derecho
         
         # Mostrar P&ID
@@ -619,7 +656,7 @@ while True:
         reloj.tick(fps) 
             
             
-#Pantalla de control
+#Pantalla de animacion
 
     if loop_control_cerrado: 
         
@@ -648,14 +685,13 @@ while True:
         ventana.blit(agua, (544, 202+ int(x))) 
         ventana.blit(bppal, (80, 660))
         ventana.blit(bfallos, (300, 660))
-        
-# Leer actividad de mouse        
+
+# Leer actividad de mouse
         mouse = pygame.mouse.get_pos()
-        print(mouse)
         click = pygame.mouse.get_pressed()
+        #print(mouse)
         
-        
-        # Click botón control
+        # Click botón ppal
         if 250 > mouse[0] > 80 and 711 > mouse[1] > 660:
            if click[0] == 1:  
                 loop_ppal=True
@@ -664,9 +700,24 @@ while True:
                 loop_sec=False  
                 loop_control_cerrado=False
                 pantalla_errores=False
-                autenticacion=False       
-                time.sleep(1)          
+                autenticacion=False                
+                pygame.event.clear()
+                time.sleep(0.5)
+                pygame.event.clear()
 
+        # Click botón Fallos
+        elif 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
+           if click[0] == 1:  
+                loop_ppal=False
+                loop_ppal_medicion=False
+                loop_sec_medicion=False
+                loop_sec=False  
+                loop_control_cerrado=False
+                pantalla_errores=True
+                autenticacion=False                
+                pygame.event.clear()
+                time.sleep(0.5)
+                pygame.event.clear()
 
 # Mostrar descripción de campo        
         if 951 > mouse[0] > 540  and 649 > mouse[1] > 138:
@@ -696,7 +747,7 @@ while True:
            if click[0] == 1:
               var = 2
     
-        print(var)
+        #print(var)
     
         if var == 2:
           for i in range(1, 62):
@@ -756,7 +807,8 @@ while True:
         ventana.blit(usuario2, (180, 18))
         ventana.blit(mostrar_hora, (180, 37))
         ventana.blit(tapar_hora, (247, 37))
-           
+        ventana.blit(bppal, (80, 660))
+        ventana.blit(bfallos, (300, 660))
         
 # Marquillas del cableado   
         texto = myFont.render("Vcc", True, black)
@@ -765,12 +817,42 @@ while True:
         
         textognd = myFont.render("GND", True, black)
         textognd= pygame.transform.rotate(textognd, 90)
-        ventana.blit(textognd, coordenada_texcableverde)
+        ventana.blit(textognd, coordenada_texcableverde)        
 
-        
-# Leer actividad de mouse        
+# Leer actividad de mouse
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
+        #print(mouse)
+        
+        # Click botón ppal
+        if 250 > mouse[0] > 80 and 711 > mouse[1] > 660:
+           #print(click[0])
+           if click[0]:  
+                loop_ppal=True
+                loop_ppal_medicion=False
+                loop_sec_medicion=False
+                loop_sec=False  
+                loop_control_cerrado=False
+                pantalla_errores=False
+                autenticacion=False 
+                pygame.event.clear()
+                time.sleep(0.5)
+                pygame.event.clear()
+
+        # Click botón fallos
+        elif 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
+           #print(click[0])
+           if click[0]:  
+                loop_ppal=False
+                loop_ppal_medicion=False
+                loop_sec_medicion=False
+                loop_sec=False  
+                loop_control_cerrado=False
+                pantalla_errores=True
+                autenticacion=False
+                pygame.event.clear()
+                time.sleep(0.5)
+                pygame.event.clear()
  
 # Cerrar sesion        
         if 152 > mouse[0] > 100 and 60 > mouse[1] > 10:
@@ -783,7 +865,7 @@ while True:
             ventana.blit(pantallaact, mouse)
         
         elif 70 > mouse[0] > 0 and 70 > mouse[1] > 0:
-            ventana.blit(logouv1, mouse)
+            ventana.blit(logouv1, mouse)                
         
         if variable_cerrarsesion == 1:
             loop_ppal=False
@@ -836,6 +918,8 @@ while True:
         ventana.blit(usuario2, (180, 18))
         ventana.blit(mostrar_hora, (180, 37))
         ventana.blit(tapar_hora, (247, 37))
+        ventana.blit(bppal, (80, 660))
+        ventana.blit(bfallos, (300, 660))
         
 # Marquillas del cableado   
         texto = myFont.render("Vcc", True, black)
@@ -854,11 +938,42 @@ while True:
         porcentaje = myFont.render(str(porc3), 1, black) 
         vcc24 = myFont.render("24", 1, black)
         
+# Leer actividad de mouse
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
-        print(mouse)
+        #print(mouse) 
+
+        # Click botón ppal
+        if 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
+           #print(click[0])
+           if click[0]:  
+                loop_ppal=True
+                loop_ppal_medicion=False
+                loop_sec_medicion=False
+                loop_sec=False  
+                loop_control_cerrado=False
+                pantalla_errores=False
+                autenticacion=False
+                pygame.event.clear()
+                time.sleep(0.5)
+                pygame.event.clear()
+
+        # Click botón fallos
+        elif 250 > mouse[0] > 80 and 711 > mouse[1] > 660:
+           #print(click[0])
+           if click[0]:  
+                loop_ppal=False
+                loop_ppal_medicion=False
+                loop_sec_medicion=False
+                loop_sec=False  
+                loop_control_cerrado=False
+                pantalla_errores=True
+                autenticacion=False
+                pygame.event.clear()
+                time.sleep(0.5)
+                pygame.event.clear()
         
-        if 152 > mouse[0] > 100 and 60 > mouse[1] > 10:
+        elif 152 > mouse[0] > 100 and 60 > mouse[1] > 10:
             ventana.blit(cerrars, mouse)
             if click[0] == 1:
                  variable_cerrarsesion = 1  
@@ -870,7 +985,7 @@ while True:
         
         elif 70 > mouse[0] > 0 and 70 > mouse[1] > 0:
             ventana.blit(logouv1, mouse)
-        
+                
         if variable_cerrarsesion == 1:
             loop_ppal=False
             loop_ppal_medicion=False
@@ -937,10 +1052,10 @@ while True:
         #ventana =  pygame.display.set_mode((400, 400))
         input_box = Input()
         usuario = input_box.ask(ventana, 'Usuario')
-        print(usuario + ' was entered')
+        #print(usuario + ' was entered')
 
         clave = input_box.ask(ventana, 'Clave')
-        print(clave + ' was entered')  
+        #print(clave + ' was entered')  
 
                         
         pygame.display.update()
@@ -999,25 +1114,14 @@ while True:
         ventana.blit(bppal, (80, 660))
         ventana.blit(bcontrol, (300, 660))
 
-        # Leer actividad de mouse        
+# Leer actividad de mouse
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
- 
-        # Cerrar sesion        
-        if 152 > mouse[0] > 100 and 60 > mouse[1] > 10:
-            ventana.blit(cerrars, mouse)
-            if click[0] == 1:
-                 variable_cerrarsesion = 1
-
-        elif 970 > mouse[0] > 640 and 60 > mouse[1] > 15:
-            ventana.blit(pantallaact, mouse)
+        #print(mouse)
         
-        elif 70 > mouse[0] > 0 and 70 > mouse[1] > 0:
-            ventana.blit(logouv1, mouse)
-
         # Click botón ppal
-        elif 250 > mouse[0] > 80 and 711 > mouse[1] > 660:
-           #print(click[0])
+        if 250 > mouse[0] > 80 and 711 > mouse[1] > 660:
+           
            if click[0]:  
                 loop_ppal=True
                 loop_ppal_medicion=False
@@ -1027,7 +1131,9 @@ while True:
                 pantalla_errores=False
                 autenticacion=False
                 cambiar_pantalla = False
-                print(pygame.MOUSEBUTTONDOWN)                
+                pygame.event.clear()
+                time.sleep(0.5)
+                pygame.event.clear()
 
         # Click botón control
         elif 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
@@ -1036,11 +1142,26 @@ while True:
                 loop_ppal=False
                 loop_ppal_medicion=False
                 loop_sec_medicion=False
-                loop_sec=True  
-                loop_control_cerrado=False
+                loop_sec=False  
+                loop_control_cerrado=True
                 pantalla_errores=False
                 autenticacion=False
-                print("Entro 9")                
+                pygame.event.clear()
+                time.sleep(0.5)
+                pygame.event.clear()
+        
+        # Cerrar sesion        
+        elif 152 > mouse[0] > 100 and 60 > mouse[1] > 10:
+            ventana.blit(cerrars, mouse)
+            if click[0] == 1:
+                 variable_cerrarsesion = 1
+
+        elif 970 > mouse[0] > 640 and 60 > mouse[1] > 15:
+            ventana.blit(pantallaact, mouse)
+        
+        elif 70 > mouse[0] > 0 and 70 > mouse[1] > 0:
+            ventana.blit(logouv1, mouse)
+        
         
         # Cerrar sesión e ir a pantalla de autenticación              
         if variable_cerrarsesion == 1:
