@@ -197,6 +197,7 @@ banersup = pygame.image.load('banersup.png')
 titulotanque = pygame.image.load('titulo_tanque.png')
 tituloanimacion = pygame.image.load('animacion.png')
 titulocontrol = pygame.image.load('control.png')
+titulofallos = pygame.image.load('fallos.png')
 banerinf = pygame.image.load('banersup.png')
 bomba = pygame.image.load('bomba.png')
 reservorio = pygame.image.load('reservorio.png')
@@ -947,7 +948,8 @@ while True:
         ventana.fill(color_fondo)
         reloj.tick(fps)        
         
-        if usuario == "ingeniero" and clave == "controlunivalle":
+        
+        if usuario == "estudiante" and clave == "controlunivalle":
             loop_ppal = False
             loop_sec = False
             autenticacion = False 
@@ -957,23 +959,15 @@ while True:
             pantalla_errores = False
             
         
-        elif usuario == "supervisor" and clave == "univalle123":
-            loop_ppal = True
+        elif usuario == "profesor" and clave == "univalle123":
+            loop_ppal = False #True
             loop_sec = False
             autenticacion = False
             loop_ppal_medicion = False
             loop_sec_medicion = False
             loop_control_cerrado=False
-            pantalla_errores = False
-            
-        elif usuario == "operario" and clave == "opercontrol":
-            loop_ppal = False
-            loop_sec = False
-            autenticacion = False 
-            loop_ppal_medicion = False
-            loop_sec_medicion = False 
-            loop_control_cerrado=True
-            pantalla_errores = False
+            pantalla_errores = True
+
             
         elif usuario == "" and clave == "":
             loop_ppal = False
@@ -988,6 +982,80 @@ while True:
             errorusuario = myFont.render("Usuario o clave incorrectos", 1, (255,0,0))
             ventana.blit(errorusuario, (800, 670))             
             time.sleep( 1 )
-            
+
+    
+# Pantalla Fallos
+
+    if pantalla_errores:
+       
+        ventana.blit(banersup, coordenada_banersup)
+        ventana.blit(logo, coordenada_logo)
+        ventana.blit(titulofallos, coordenada_titulo)
+        ventana.blit(cerrarsesion, coordenada_cerrarsesion) 
+        ventana.blit(usuario2, (180, 18))
+        ventana.blit(mostrar_hora, (180, 37))
+        ventana.blit(tapar_hora, (247, 37))
+        ventana.blit(banerinf, coordenada_banerinf)
+        ventana.blit(bppal, (80, 660))
+        ventana.blit(bcontrol, (300, 660))
+
+        # Leer actividad de mouse        
+        mouse = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()
+ 
+        # Cerrar sesion        
+        if 152 > mouse[0] > 100 and 60 > mouse[1] > 10:
+            ventana.blit(cerrars, mouse)
+            if click[0] == 1:
+                 variable_cerrarsesion = 1
+
+        elif 970 > mouse[0] > 640 and 60 > mouse[1] > 15:
+            ventana.blit(pantallaact, mouse)
+        
+        elif 70 > mouse[0] > 0 and 70 > mouse[1] > 0:
+            ventana.blit(logouv1, mouse)
+
+        # Click botón ppal
+        elif 250 > mouse[0] > 80 and 711 > mouse[1] > 660:
+           #print(click[0])
+           if click[0]:  
+                loop_ppal=True
+                loop_ppal_medicion=False
+                loop_sec_medicion=False
+                loop_sec=False  
+                loop_control_cerrado=False
+                pantalla_errores=False
+                autenticacion=False
+                cambiar_pantalla = False
+                print(pygame.MOUSEBUTTONDOWN)                
+
+        # Click botón control
+        elif 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
+           #print(click[0])
+           if click[0]:  
+                loop_ppal=False
+                loop_ppal_medicion=False
+                loop_sec_medicion=False
+                loop_sec=True  
+                loop_control_cerrado=False
+                pantalla_errores=False
+                autenticacion=False
+                print("Entro 9")                
+        
+        # Cerrar sesión e ir a pantalla de autenticación              
+        if variable_cerrarsesion == 1:
+            loop_ppal=False
+            loop_ppal_medicion=False
+            loop_sec_medicion=False
+            loop_sec=False  
+            loop_control_cerrado=False
+            pantalla_errores=False
+            autenticacion=True   
+
+        pygame.display.update()
+        pygame.display.flip()
+        ventana.fill(color_fondo)
+        reloj.tick(fps) 
+
     
                                  
