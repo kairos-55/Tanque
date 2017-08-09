@@ -164,27 +164,34 @@ class Input:
       pygame.display.update()
       
    def ask(self, screen, question):
-      current_string = []
-      current_string_clave=[]
+      current_string = []      
+      current_string_clave=[] #Variable que almacenará una cadena de '*' 
       
       self.display_box(screen, question + ': ' + ''.join(current_string))
       while True:
          inkey = self.get_key()
          if inkey == pygame.K_BACKSPACE:
+            #Borrar el último caracter almacenado
             current_string_clave = current_string_clave[0:-1]
             current_string = current_string[0:-1]
             if question == "Clave":
+               #Actualizar lo mostrado en pantalla
                self.display_box(screen, question + ': ' + ''.join(current_string_clave))
             else:
+               #Actualizar lo mostrado en pantalla
                self.display_box(screen, question + ': ' + ''.join(current_string))
          elif inkey == pygame.K_RETURN:
             break
          else:
+            #Adherir la letra ingresada
             current_string.append(chr(inkey))            
-            if question == "Clave":               
+            if question == "Clave":
+               #Adherir un '*' por cada tecla presionada
                current_string_clave.append('*')
+               #Mostrar en pantalla la clave ocultada
                self.display_box(screen, question + ': ' + ''.join(current_string_clave))
             else:
+               #Mostrar en pantalla el texto ingresado hasta el momento
                self.display_box(screen, question + ': ' + ''.join(current_string))
                
       return ''.join(current_string)
@@ -353,9 +360,9 @@ while True:
                 loop_control_cerrado=True
                 pantalla_errores=False
                 autenticacion=False                                
-                pygame.event.clear()
-                time.sleep(0.5)
-                pygame.event.clear()
+                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                time.sleep(0.5) #Pausa la ejecución del programa
+                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
                 
 # Click botón fallos
         elif 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
@@ -368,9 +375,9 @@ while True:
                 loop_control_cerrado=False
                 pantalla_errores=True
                 autenticacion=False               
-                pygame.event.clear()
-                time.sleep(0.5)
-                pygame.event.clear()
+                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                time.sleep(0.5) #Pausa la ejecución del programa
+                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
                 
 # Botones lado derecho
 
@@ -529,9 +536,9 @@ while True:
                 pantalla_errores=False
                 autenticacion=False 
                 loop_control_cerrado=True                
-                pygame.event.clear()
-                time.sleep(0.5)
-                pygame.event.clear()
+                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                time.sleep(0.5) #Pausa la ejecución del programa
+                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
         
         # Click botón fallos
         elif 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
@@ -543,9 +550,9 @@ while True:
                 pantalla_errores=True
                 autenticacion=False 
                 loop_control_cerrado=False                
-                pygame.event.clear()
-                time.sleep(0.5)
-                pygame.event.clear()
+                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                time.sleep(0.5) #Pausa la ejecución del programa
+                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
 
 # Botones lado derecho
         
@@ -701,10 +708,10 @@ while True:
                 loop_control_cerrado=False
                 pantalla_errores=False
                 autenticacion=False                
-                pygame.event.clear()
-                time.sleep(0.5)
-                pygame.event.clear()
-
+                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                time.sleep(0.5) #Pausa la ejecución del programa
+                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+                
         # Click botón Fallos
         elif 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
            if click[0] == 1:  
@@ -715,10 +722,10 @@ while True:
                 loop_control_cerrado=False
                 pantalla_errores=True
                 autenticacion=False                
-                pygame.event.clear()
-                time.sleep(0.5)
-                pygame.event.clear()
-
+                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                time.sleep(0.5) #Pausa la ejecución del programa
+                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+                
 # Mostrar descripción de campo        
         if 951 > mouse[0] > 540  and 649 > mouse[1] > 138:
             ventana.blit(anim, mouse)
@@ -835,10 +842,10 @@ while True:
                 loop_control_cerrado=False
                 pantalla_errores=False
                 autenticacion=False 
-                pygame.event.clear()
-                time.sleep(0.5)
-                pygame.event.clear()
-
+                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                time.sleep(0.5) #Pausa la ejecución del programa
+                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+                
         # Click botón fallos
         elif 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
            #print(click[0])
@@ -850,10 +857,10 @@ while True:
                 loop_control_cerrado=False
                 pantalla_errores=True
                 autenticacion=False
-                pygame.event.clear()
-                time.sleep(0.5)
-                pygame.event.clear()
- 
+                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                time.sleep(0.5) #Pausa la ejecución del programa
+                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+                
 # Cerrar sesion        
         if 152 > mouse[0] > 100 and 60 > mouse[1] > 10:
             ventana.blit(cerrars, mouse)
@@ -954,10 +961,10 @@ while True:
                 loop_control_cerrado=False
                 pantalla_errores=False
                 autenticacion=False
-                pygame.event.clear()
-                time.sleep(0.5)
-                pygame.event.clear()
-
+                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                time.sleep(0.5) #Pausa la ejecución del programa
+                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+                
         # Click botón fallos
         elif 250 > mouse[0] > 80 and 711 > mouse[1] > 660:
            #print(click[0])
@@ -969,10 +976,10 @@ while True:
                 loop_control_cerrado=False
                 pantalla_errores=True
                 autenticacion=False
-                pygame.event.clear()
-                time.sleep(0.5)
-                pygame.event.clear()
-        
+                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                time.sleep(0.5) #Pausa la ejecución del programa
+                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+                
         elif 152 > mouse[0] > 100 and 60 > mouse[1] > 10:
             ventana.blit(cerrars, mouse)
             if click[0] == 1:
@@ -1131,10 +1138,10 @@ while True:
                 pantalla_errores=False
                 autenticacion=False
                 cambiar_pantalla = False
-                pygame.event.clear()
-                time.sleep(0.5)
-                pygame.event.clear()
-
+                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                time.sleep(0.5) #Pausa la ejecución del programa
+                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+                
         # Click botón control
         elif 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
            #print(click[0])
@@ -1146,10 +1153,10 @@ while True:
                 loop_control_cerrado=True
                 pantalla_errores=False
                 autenticacion=False
-                pygame.event.clear()
-                time.sleep(0.5)
-                pygame.event.clear()
-        
+                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                time.sleep(0.5) #Pausa la ejecución del programa
+                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+                
         # Cerrar sesion        
         elif 152 > mouse[0] > 100 and 60 > mouse[1] > 10:
             ventana.blit(cerrars, mouse)
