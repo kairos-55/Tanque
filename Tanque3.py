@@ -11,7 +11,7 @@ from decimal import *
 import string
 string.ascii_uppercase
 from datetime import datetime
-
+import checkButtons #Clase que maneja botones de selección
 
 pygame.init()
 # Inicializar valores
@@ -20,6 +20,9 @@ white=(255,255,255)
 blue=(0,0,200)
 green=(0,200,0)
 dimension_ventana = (1024,720)
+
+dimension_boton_seleccion = (18,18)
+
 coordenada_equilibro_masa = 398
 coordenada_tanque = (160,101)
 coordenada_logo = (0,-5)
@@ -63,6 +66,17 @@ coordenada_zona_planta = (-5, 102)
 coordenada_zona_superior = (24, 0)
 coordenada_cajon_cerrado = (70, 180)
 coordenada_p_id = (450, 200)
+
+#Coordenadas de los botones de selección en la pantalla de fallos
+coordenada_fallo1=(400,150)
+coordenada_fallo2=(400,200)
+coordenada_fallo3=(400,250)
+coordenada_fallo4=(400,300)
+coordenada_fallo5=(400,350)
+coordenada_fallo6=(400,400)
+coordenada_fallo7=(400,450)
+coordenada_fallo8=(400,500)
+
 origen = (30, 30)
 color_fondo = (225,225,225)
 fps = 60
@@ -114,6 +128,23 @@ reloj = pygame.time.Clock()
 myFont = pygame.font.SysFont("Times New Roman", 18, bold=True)
 #myFont2 = pygame.font.SysFont("Times New Roman", 18, bold=True, background = "white")
 
+texto_fallo1= "FALLO 1"
+texto_fallo2= "FALLO 2"
+texto_fallo3= "FALLO 3"
+texto_fallo4= "FALLO 4"
+texto_fallo5= "FALLO 5"
+texto_fallo6= "FALLO 6"
+texto_fallo7= "FALLO 7"
+texto_fallo8= "FALLO 8"
+
+checkbox1 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo1, texto_fallo1)
+checkbox2 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo2, texto_fallo2)
+checkbox3 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo3, texto_fallo3) 
+checkbox4 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo4, texto_fallo4) 
+checkbox5 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo5, texto_fallo5) 
+checkbox6 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo6, texto_fallo6)
+checkbox7 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo7, texto_fallo7)
+checkbox8 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo8, texto_fallo8)
 
 #Digitar usuario y contraseña
 class Input:
@@ -278,7 +309,117 @@ while True:
         
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
-            sys.exit(0)          
+            sys.exit(0)
+
+        if pantalla_errores: 
+           
+           mouse = pygame.mouse.get_pos()
+
+           if coordenada_fallo1[0] + dimension_boton_seleccion[0] > mouse[0] > coordenada_fallo1[0] and coordenada_fallo1[1] + dimension_boton_seleccion[1] > mouse[1] > coordenada_fallo1[1]:
+
+              checkbox1.update_checkbox(evento)
+        
+              if not checkbox1.checked and evento.type == pygame.MOUSEBUTTONDOWN:
+                 checkbox2 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo2, texto_fallo2)
+                 checkbox3 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo3, texto_fallo3)                          
+                 checkbox4 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo4, texto_fallo4) 
+                 checkbox5 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo5, texto_fallo5) 
+                 checkbox6 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo6, texto_fallo6)
+                 checkbox7 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo7, texto_fallo7)
+                 checkbox8 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo8, texto_fallo8) 
+
+           elif coordenada_fallo2[0] + dimension_boton_seleccion[0] > mouse[0] > coordenada_fallo2[0] and coordenada_fallo2[1] + dimension_boton_seleccion[1] > mouse[1] > coordenada_fallo2[1]:
+
+              checkbox2.update_checkbox(evento)
+        
+              if not checkbox2.checked and evento.type == pygame.MOUSEBUTTONDOWN:
+                 checkbox1 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo1, texto_fallo1)
+                 checkbox3 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo3, texto_fallo3)                          
+                 checkbox4 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo4, texto_fallo4) 
+                 checkbox5 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo5, texto_fallo5) 
+                 checkbox6 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo6, texto_fallo6)
+                 checkbox7 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo7, texto_fallo7)
+                 checkbox8 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo8, texto_fallo8) 
+
+           elif coordenada_fallo3[0] + dimension_boton_seleccion[0] > mouse[0] > coordenada_fallo3[0] and coordenada_fallo3[1] + dimension_boton_seleccion[1] > mouse[1] > coordenada_fallo3[1]:
+
+              checkbox3.update_checkbox(evento)
+        
+              if not checkbox3.checked and evento.type == pygame.MOUSEBUTTONDOWN:
+                 checkbox1 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo1, texto_fallo1)
+                 checkbox2 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo2, texto_fallo2)                          
+                 checkbox4 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo4, texto_fallo4) 
+                 checkbox5 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo5, texto_fallo5) 
+                 checkbox6 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo6, texto_fallo6)
+                 checkbox7 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo7, texto_fallo7)
+                 checkbox8 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo8, texto_fallo8) 
+
+           elif coordenada_fallo4[0] + dimension_boton_seleccion[0] > mouse[0] > coordenada_fallo4[0] and coordenada_fallo4[1] + dimension_boton_seleccion[1] > mouse[1] > coordenada_fallo4[1]:
+
+              checkbox4.update_checkbox(evento)
+        
+              if not checkbox4.checked and evento.type == pygame.MOUSEBUTTONDOWN:
+                 checkbox1 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo1, texto_fallo1)
+                 checkbox2 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo2, texto_fallo2)                          
+                 checkbox3 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo3, texto_fallo3) 
+                 checkbox5 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo5, texto_fallo5) 
+                 checkbox6 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo6, texto_fallo6)
+                 checkbox7 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo7, texto_fallo7)
+                 checkbox8 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo8, texto_fallo8) 
+
+           elif coordenada_fallo5[0] + dimension_boton_seleccion[0] > mouse[0] > coordenada_fallo5[0] and coordenada_fallo5[1] + dimension_boton_seleccion[1] > mouse[1] > coordenada_fallo5[1]:
+
+              checkbox5.update_checkbox(evento)
+        
+              if not checkbox5.checked and evento.type == pygame.MOUSEBUTTONDOWN:
+                 checkbox1 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo1, texto_fallo1)
+                 checkbox2 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo2, texto_fallo2)                          
+                 checkbox3 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo3, texto_fallo3) 
+                 checkbox4 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo4, texto_fallo4) 
+                 checkbox6 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo6, texto_fallo6)
+                 checkbox7 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo7, texto_fallo7)
+                 checkbox8 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo8, texto_fallo8) 
+
+           elif coordenada_fallo6[0] + dimension_boton_seleccion[0] > mouse[0] > coordenada_fallo6[0] and coordenada_fallo6[1] + dimension_boton_seleccion[1] > mouse[1] > coordenada_fallo6[1]:
+
+              checkbox6.update_checkbox(evento)
+        
+              if not checkbox6.checked and evento.type == pygame.MOUSEBUTTONDOWN:
+                 checkbox1 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo1, texto_fallo1)
+                 checkbox2 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo2, texto_fallo2)                          
+                 checkbox3 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo3, texto_fallo3) 
+                 checkbox4 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo4, texto_fallo4) 
+                 checkbox5 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo5, texto_fallo5)
+                 checkbox7 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo7, texto_fallo7)
+                 checkbox8 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo8, texto_fallo8) 
+
+           elif coordenada_fallo7[0] + dimension_boton_seleccion[0] > mouse[0] > coordenada_fallo7[0] and coordenada_fallo7[1] + dimension_boton_seleccion[1] > mouse[1] > coordenada_fallo7[1]:
+
+              checkbox7.update_checkbox(evento)
+        
+              if not checkbox7.checked and evento.type == pygame.MOUSEBUTTONDOWN:
+                 checkbox1 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo1, texto_fallo1)
+                 checkbox2 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo2, texto_fallo2)                          
+                 checkbox3 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo3, texto_fallo3) 
+                 checkbox4 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo4, texto_fallo4) 
+                 checkbox5 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo5, texto_fallo5)
+                 checkbox6 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo6, texto_fallo6)
+                 checkbox8 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo8, texto_fallo8) 
+
+           elif coordenada_fallo8[0] + dimension_boton_seleccion[0] > mouse[0] > coordenada_fallo8[0] and coordenada_fallo8[1] + dimension_boton_seleccion[1] > mouse[1] > coordenada_fallo8[1]:
+
+              checkbox8.update_checkbox(evento)
+        
+              if not checkbox8.checked and evento.type == pygame.MOUSEBUTTONDOWN:
+                 checkbox1 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo1, texto_fallo1)
+                 checkbox2 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo2, texto_fallo2)                          
+                 checkbox3 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo3, texto_fallo3) 
+                 checkbox4 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo4, texto_fallo4) 
+                 checkbox5 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo5, texto_fallo5)
+                 checkbox6 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo6, texto_fallo6)
+                 checkbox7 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo7, texto_fallo7) 
+
+           
        
 #Pantalla principal         
     if loop_ppal:
@@ -1120,12 +1261,12 @@ while True:
         ventana.blit(banerinf, coordenada_banerinf)
         ventana.blit(bppal, (80, 660))
         ventana.blit(bcontrol, (300, 660))
-
-# Leer actividad de mouse
-        mouse = pygame.mouse.get_pos()
-        click = pygame.mouse.get_pressed()
-        #print(mouse)
         
+        # Leer actividad de mouse
+        mouse = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()        
+        #print(mouse)
+                
         # Click botón ppal
         if 250 > mouse[0] > 80 and 711 > mouse[1] > 660:
            
@@ -1178,10 +1319,19 @@ while True:
             loop_sec=False  
             loop_control_cerrado=False
             pantalla_errores=False
-            autenticacion=True   
-
+            autenticacion=True
+            
+        checkbox1.render_checkbox()
+        checkbox2.render_checkbox()
+        checkbox3.render_checkbox()
+        checkbox4.render_checkbox()
+        checkbox5.render_checkbox()
+        checkbox6.render_checkbox()
+        checkbox7.render_checkbox()        
+        checkbox8.render_checkbox() 
+        
         pygame.display.update()
-        pygame.display.flip()
+        pygame.display.flip()               
         ventana.fill(color_fondo)
         reloj.tick(fps) 
 
