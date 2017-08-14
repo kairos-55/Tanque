@@ -68,14 +68,14 @@ coordenada_cajon_cerrado = (70, 180)
 coordenada_p_id = (450, 200)
 
 #Coordenadas de los botones de selección en la pantalla de fallos
-coordenada_fallo1=(400,150)
-coordenada_fallo2=(400,200)
-coordenada_fallo3=(400,250)
-coordenada_fallo4=(400,300)
-coordenada_fallo5=(400,350)
-coordenada_fallo6=(400,400)
-coordenada_fallo7=(400,450)
-coordenada_fallo8=(400,500)
+coordenada_fallo1 = (450,125)
+coordenada_fallo2 = (450,175)
+coordenada_fallo3 = (450,225)
+coordenada_fallo4 = (450,275)
+coordenada_fallo5 = (450,325)
+coordenada_fallo6 = (450,375)
+coordenada_fallo7 = (450,425)
+coordenada_fallo8 = (450,475)
 
 origen = (30, 30)
 color_fondo = (225,225,225)
@@ -119,6 +119,7 @@ animacion_tanque = False
 loop_control_cerrado = False
 pantalla_errores = False
 usuario = ""
+seleccion_fallo = False
 
 #Definir propiedades ventana principal
 ventana = pygame.display.set_mode(dimension_ventana)
@@ -136,6 +137,8 @@ texto_fallo5= "FALLO 5"
 texto_fallo6= "FALLO 6"
 texto_fallo7= "FALLO 7"
 texto_fallo8= "FALLO 8"
+
+fallo_seleccionado = ""
 
 checkbox1 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo1, texto_fallo1)
 checkbox2 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo2, texto_fallo2)
@@ -283,6 +286,9 @@ bmotor = pygame.image.load('boton_motor.png')
 bppal = pygame.image.load('boton_ppal.png')
 bfallos = pygame.image.load('boton_fallos.png')
 
+bseleccionar = pygame.image.load('boton_seleccionar.png')
+baceptar = pygame.image.load('boton_aceptar.png')
+bcancelar = pygame.image.load('boton_cancelar.png')
 
 x = 262 #Valor inicial (nivel mínimo del tanque)
 hv = np.linspace(h0,hf,n)
@@ -313,8 +319,8 @@ while True:
 
         if pantalla_errores: 
            
-           mouse = pygame.mouse.get_pos()
-
+           mouse = pygame.mouse.get_pos()           
+           
            if coordenada_fallo1[0] + dimension_boton_seleccion[0] > mouse[0] > coordenada_fallo1[0] and coordenada_fallo1[1] + dimension_boton_seleccion[1] > mouse[1] > coordenada_fallo1[1]:
 
               checkbox1.update_checkbox(evento)
@@ -327,6 +333,7 @@ while True:
                  checkbox6 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo6, texto_fallo6)
                  checkbox7 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo7, texto_fallo7)
                  checkbox8 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo8, texto_fallo8) 
+                 fallo_seleccionado = texto_fallo1
 
            elif coordenada_fallo2[0] + dimension_boton_seleccion[0] > mouse[0] > coordenada_fallo2[0] and coordenada_fallo2[1] + dimension_boton_seleccion[1] > mouse[1] > coordenada_fallo2[1]:
 
@@ -340,7 +347,8 @@ while True:
                  checkbox6 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo6, texto_fallo6)
                  checkbox7 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo7, texto_fallo7)
                  checkbox8 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo8, texto_fallo8) 
-
+                 fallo_seleccionado = texto_fallo2
+                 
            elif coordenada_fallo3[0] + dimension_boton_seleccion[0] > mouse[0] > coordenada_fallo3[0] and coordenada_fallo3[1] + dimension_boton_seleccion[1] > mouse[1] > coordenada_fallo3[1]:
 
               checkbox3.update_checkbox(evento)
@@ -353,7 +361,8 @@ while True:
                  checkbox6 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo6, texto_fallo6)
                  checkbox7 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo7, texto_fallo7)
                  checkbox8 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo8, texto_fallo8) 
-
+                 fallo_seleccionado = texto_fallo3
+                 
            elif coordenada_fallo4[0] + dimension_boton_seleccion[0] > mouse[0] > coordenada_fallo4[0] and coordenada_fallo4[1] + dimension_boton_seleccion[1] > mouse[1] > coordenada_fallo4[1]:
 
               checkbox4.update_checkbox(evento)
@@ -366,7 +375,8 @@ while True:
                  checkbox6 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo6, texto_fallo6)
                  checkbox7 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo7, texto_fallo7)
                  checkbox8 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo8, texto_fallo8) 
-
+                 fallo_seleccionado = texto_fallo4
+                 
            elif coordenada_fallo5[0] + dimension_boton_seleccion[0] > mouse[0] > coordenada_fallo5[0] and coordenada_fallo5[1] + dimension_boton_seleccion[1] > mouse[1] > coordenada_fallo5[1]:
 
               checkbox5.update_checkbox(evento)
@@ -379,7 +389,8 @@ while True:
                  checkbox6 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo6, texto_fallo6)
                  checkbox7 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo7, texto_fallo7)
                  checkbox8 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo8, texto_fallo8) 
-
+                 fallo_seleccionado = texto_fallo5
+                 
            elif coordenada_fallo6[0] + dimension_boton_seleccion[0] > mouse[0] > coordenada_fallo6[0] and coordenada_fallo6[1] + dimension_boton_seleccion[1] > mouse[1] > coordenada_fallo6[1]:
 
               checkbox6.update_checkbox(evento)
@@ -392,7 +403,8 @@ while True:
                  checkbox5 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo5, texto_fallo5)
                  checkbox7 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo7, texto_fallo7)
                  checkbox8 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo8, texto_fallo8) 
-
+                 fallo_seleccionado = texto_fallo6
+                 
            elif coordenada_fallo7[0] + dimension_boton_seleccion[0] > mouse[0] > coordenada_fallo7[0] and coordenada_fallo7[1] + dimension_boton_seleccion[1] > mouse[1] > coordenada_fallo7[1]:
 
               checkbox7.update_checkbox(evento)
@@ -405,7 +417,8 @@ while True:
                  checkbox5 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo5, texto_fallo5)
                  checkbox6 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo6, texto_fallo6)
                  checkbox8 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo8, texto_fallo8) 
-
+                 fallo_seleccionado = texto_fallo7
+                 
            elif coordenada_fallo8[0] + dimension_boton_seleccion[0] > mouse[0] > coordenada_fallo8[0] and coordenada_fallo8[1] + dimension_boton_seleccion[1] > mouse[1] > coordenada_fallo8[1]:
 
               checkbox8.update_checkbox(evento)
@@ -418,7 +431,12 @@ while True:
                  checkbox5 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo5, texto_fallo5)
                  checkbox6 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo6, texto_fallo6)
                  checkbox7 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo7, texto_fallo7) 
+                 fallo_seleccionado = texto_fallo8
 
+           elif 600 > mouse[0] > 400 and 600 > mouse[1] > 550 and evento.type == pygame.MOUSEBUTTONDOWN:
+         
+                 seleccion_fallo = True     
+              
            
        
 #Pantalla principal         
@@ -1261,6 +1279,7 @@ while True:
         ventana.blit(banerinf, coordenada_banerinf)
         ventana.blit(bppal, (80, 660))
         ventana.blit(bcontrol, (300, 660))
+        ventana.blit(bseleccionar, (400, 550))
         
         # Leer actividad de mouse
         mouse = pygame.mouse.get_pos()
@@ -1320,20 +1339,99 @@ while True:
             loop_control_cerrado=False
             pantalla_errores=False
             autenticacion=True
-            
-        checkbox1.render_checkbox()
-        checkbox2.render_checkbox()
-        checkbox3.render_checkbox()
-        checkbox4.render_checkbox()
-        checkbox5.render_checkbox()
-        checkbox6.render_checkbox()
-        checkbox7.render_checkbox()        
-        checkbox8.render_checkbox() 
+
+        if not seleccion_fallo:
+           
+           checkbox1.render_checkbox()
+           checkbox2.render_checkbox()
+           checkbox3.render_checkbox()
+           checkbox4.render_checkbox()
+           checkbox5.render_checkbox()
+           checkbox6.render_checkbox()
+           checkbox7.render_checkbox()        
+           checkbox8.render_checkbox()
+
+        else:
+
+           if not checkbox1.checked and not checkbox2.checked and not checkbox3.checked and not checkbox4.checked and not checkbox5.checked and not checkbox6.checked and not checkbox7.checked and not checkbox8.checked:
+              anuncio = myFont.render("Usted NO ha seleccionado fallo alguno.", 1, (255,0,0))
+              ventana.fill(color_fondo)
+              ventana.blit(banersup, coordenada_banersup)
+              ventana.blit(logo, coordenada_logo)
+              ventana.blit(titulofallos, coordenada_titulo)
+              ventana.blit(cerrarsesion, coordenada_cerrarsesion) 
+              ventana.blit(usuario2, (180, 18))
+              ventana.blit(mostrar_hora, (180, 37))
+              ventana.blit(tapar_hora, (247, 37))
+              ventana.blit(banerinf, coordenada_banerinf)
+              ventana.blit(anuncio, (400, 300))
+              ventana.blit(baceptar, (450, 350))
+
+              if 620 > mouse[0] > 450 and 400 > mouse[1] > 350 and click[0]:
+                 loop_ppal=True
+                 loop_ppal_medicion=False
+                 loop_sec_medicion=False
+                 loop_sec=False  
+                 loop_control_cerrado=False
+                 pantalla_errores=False
+                 autenticacion=False
+                 cambiar_pantalla = False
+                 seleccion_fallo = False
+                 pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                 time.sleep(0.5) #Pausa la ejecución del programa
+                 pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+                 
+              
+           else:
+              anuncio = myFont.render("Usted ha seleccionado el fallo:", 1, (255,0,0))
+              fallo = myFont.render(fallo_seleccionado, 1, (255,0,0))
+              ventana.fill(color_fondo)
+              ventana.blit(banersup, coordenada_banersup)
+              ventana.blit(logo, coordenada_logo)
+              ventana.blit(titulofallos, coordenada_titulo)
+              ventana.blit(cerrarsesion, coordenada_cerrarsesion) 
+              ventana.blit(usuario2, (180, 18))
+              ventana.blit(mostrar_hora, (180, 37))
+              ventana.blit(tapar_hora, (247, 37))
+              ventana.blit(banerinf, coordenada_banerinf)
+              ventana.blit(anuncio, (400,300))
+              ventana.blit(fallo, (470,350))
+              ventana.blit (bcancelar, (300, 400))
+              ventana.blit (baceptar, (550, 400))
+
+              if 720 > mouse[0] > 550 and 450 > mouse[1] > 400 and click[0]:
+                 loop_ppal=False
+                 loop_ppal_medicion=False
+                 loop_sec_medicion=False
+                 loop_sec=False  
+                 loop_control_cerrado=False
+                 pantalla_errores=True
+                 autenticacion=False
+                 cambiar_pantalla = False
+                 seleccion_fallo = False
+                 pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                 time.sleep(0.5) #Pausa la ejecución del programa
+                 pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+                 
+              elif 470 > mouse[0] > 300 and 450 > mouse[1] > 400 and click[0]:
+                 loop_ppal=False
+                 loop_ppal_medicion=False
+                 loop_sec_medicion=False
+                 loop_sec=False  
+                 loop_control_cerrado=False
+                 pantalla_errores=True
+                 autenticacion=False
+                 cambiar_pantalla = False
+                 seleccion_fallo = False
+                 pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                 time.sleep(0.5) #Pausa la ejecución del programa
+                 pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento                
+           
         
         pygame.display.update()
         pygame.display.flip()               
         ventana.fill(color_fondo)
         reloj.tick(fps) 
 
-    
+        
                                  
