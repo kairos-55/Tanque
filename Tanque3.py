@@ -127,6 +127,7 @@ pausa = False
 fin = 600
 vertical = False
 horizontal = False
+vertical2 = False
 
 #Definir propiedades ventana principal
 ventana = pygame.display.set_mode(dimension_ventana)
@@ -467,7 +468,6 @@ while True:
                  if fin < 600:
                     pausa = True
                     reproducir = False
-                    vertical = False
                     fin = 600
                  else:
                     reproducir = True
@@ -896,64 +896,61 @@ while True:
            if vertical:
                                 
               if abs(altura) >= 320:
-                 #altura = 0
-                 #reproducir = False
                  fin = 601
                  vertical = False
                  horizontal = True
-                 """baseH = 0
-                 alturaH = 0
-                 baseV = 0
-                 alturaV = 0"""
-              else:
-                 if fin % velocidad_reproduccion == 0:
-                    altura -= 20
+                 
+              elif fin % velocidad_reproduccion == 0:
+                 altura -= 20
 
               fin -= 1
 
            elif horizontal:              
-              pygame.draw.rect(ventana, (0,162,232), (561, 144, baseH, alturaH))
-           
+              pygame.draw.rect(ventana, (0,162,232), (544, 144, baseH, alturaH))
+           #561
               if baseH >= 200:
-                 #baseH = 20
                  horizontal = False
+                 vertical2 = True
                  fin = 601
-                 """baseV = 0
-                 alturaV = 0"""
-              else:
-                 if fin % velocidad_reproduccion == 0:
-                    baseH += 20
+                 
+              elif fin % velocidad_reproduccion == 0:
+                 baseH += 20
 
               fin -= 1
 
-           else:
-              pygame.draw.rect(ventana, (0,162,232), (561, 144, baseH, alturaH))
+           elif vertical2:
+              pygame.draw.rect(ventana, (0,162,232), (544, 144, baseH, alturaH))
            
               pygame.draw.rect(ventana, (0,162,232), (744, 144, baseV, alturaV))
            
               if alturaV >= 50:
-                 #baseH = 20
                  reproducir = False
-                 pausa = False
+                 pausa = False                 
+                 vertical2 = False
                  fin = 601
-                 """base = 17
+                 base = 17
                  altura = 0
                  baseH = 0
                  alturaH = 15
                  baseV = 17
-                 alturaV = 15"""
-              else:
-                 if fin % velocidad_reproduccion == 0:
-                    alturaV += 20
+                 alturaV = 0
+              elif fin % velocidad_reproduccion == 0:
+                 alturaV += 20
 
               fin -= 1
 
         if pausa:
-
-           pygame.draw.rect(ventana, (0,162,232), (544, 465, base, altura))
-           pygame.draw.rect(ventana, (0,162,232), (561, 144, baseH, alturaH))
-           pygame.draw.rect(ventana, (0,162,232), (744, 144, baseV, alturaV))
+           
            ventana.blit(bplay, (850, 150))
+           pygame.draw.rect(ventana, (0,162,232), (544, 465, base, altura))
+
+           if horizontal:
+              pygame.draw.rect(ventana, (0,162,232), (544, 144, baseH, alturaH))
+           elif vertical2:              
+              pygame.draw.rect(ventana, (0,162,232), (544, 144, baseH, alturaH))
+              pygame.draw.rect(ventana, (0,162,232), (744, 144, baseV, alturaV))
+
+           
 
 # Leer actividad de mouse
         mouse = pygame.mouse.get_pos()
