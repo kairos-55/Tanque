@@ -122,7 +122,7 @@ animacion_tanque = False
 loop_control_cerrado = False
 pantalla_errores = False
 usuario = ""
-usuario_fallos = "profesor"
+usuario_fallos = "p"
 seleccion_fallo = False
 reproducir = False
 pausa = False
@@ -304,6 +304,7 @@ bfallos = pygame.image.load('boton_fallos.png')
 bseleccionar = pygame.image.load('boton_seleccionar.png')
 baceptar = pygame.image.load('boton_aceptar.png')
 bcancelar = pygame.image.load('boton_cancelar.png')
+bcambiar = pygame.image.load('boton_cambiar.png')
 
 bplay = pygame.image.load('boton_play.png')
 bpausa = pygame.image.load('boton_pausa.png')
@@ -486,19 +487,44 @@ while True:
            if evento.type == pygame.MOUSEBUTTONDOWN:
 
               mouse = pygame.mouse.get_pos()
-              
-              if 620 > mouse[0] > 450 and 450 > mouse[1] > 400:
 
-                 loop_ppal=True
-                 loop_ppal_medicion=False
-                 loop_sec_medicion=False
-                 loop_sec=False  
-                 loop_control_cerrado=False
-                 pantalla_errores=False
-                 autenticacion=False
-                 cambiar_pantalla = False
-                 seleccion_fallo = False
-                 fallos_estudiante = False
+              if sistema:
+
+                 #Click botón Aceptar
+                 if 740 > mouse[0] > 570 and 450 > mouse[1] > 400:
+
+                    loop_ppal=True
+                    loop_ppal_medicion=False
+                    loop_sec_medicion=False
+                    loop_sec=False  
+                    loop_control_cerrado=False
+                    pantalla_errores=False
+                    autenticacion=False
+                    cambiar_pantalla = False
+                    seleccion_fallo = False
+                    fallos_estudiante = False
+
+                 #Click botón Cambiar
+                 elif 490 > mouse[0] > 320 and 450 > mouse[1] > 400:
+
+                    fallo_seleccionado = ""
+
+                 
+              else:
+                 
+                 #Click botón Aceptar
+                 if 620 > mouse[0] > 450 and 450 > mouse[1] > 400:
+
+                    loop_ppal=True
+                    loop_ppal_medicion=False
+                    loop_sec_medicion=False
+                    loop_sec=False  
+                    loop_control_cerrado=False
+                    pantalla_errores=False
+                    autenticacion=False
+                    cambiar_pantalla = False
+                    seleccion_fallo = False
+                    fallos_estudiante = False
         
 
 #Pantalla principal    
@@ -1442,9 +1468,9 @@ while True:
         reloj.tick(fps)        
         
         
-        if usuario == "estudiante" and clave == "estudiante":
-            loop_ppal = True
-            loop_sec = False
+        if usuario == "e" and clave == "e":
+            loop_ppal = False
+            loop_sec = True
             autenticacion = False 
             loop_ppal_medicion = False
             loop_sec_medicion = False
@@ -1452,12 +1478,12 @@ while True:
             pantalla_errores = False
             
         
-        elif usuario == "profesor" and clave == "profesor":
-            loop_ppal = True
+        elif usuario == "p" and clave == "p":
+            loop_ppal = False
             loop_sec = False
             autenticacion = False
             loop_ppal_medicion = False
-            loop_sec_medicion = False
+            loop_sec_medicion = True
             loop_control_cerrado=False
             pantalla_errores = False
 
@@ -1679,12 +1705,14 @@ while True:
           if sistema:
              anuncio = myFont.render("El sistema ha seleccionado el fallo:", 1, (255,0,0))
              fallo = myFont.render(fallo_seleccionado, 1, (255,0,0))
+             ventana.blit(baceptar, (570, 400))
+             ventana.blit(bcambiar, (320, 400))
           else:
              anuncio = myFont.render("El docente ha seleccionado el fallo:", 1, (255,0,0))
              fallo = myFont.render(fallo_seleccionado, 1, (255,0,0))
              sistema = False
-          
-       ventana.fill(color_fondo)
+             ventana.blit(baceptar, (450, 400))
+       
        ventana.blit(banersup, coordenada_banersup)
        ventana.blit(logo, coordenada_logo)
        ventana.blit(titulofallos, coordenada_titulo)
@@ -1694,8 +1722,7 @@ while True:
        ventana.blit(tapar_hora, (247, 37))
        ventana.blit(banerinf, coordenada_banerinf)
        ventana.blit(anuncio, (400, 300))
-       ventana.blit(fallo, (470, 350))
-       ventana.blit(baceptar, (450, 400))
+       ventana.blit(fallo, (500, 350))       
 
        # Leer actividad de mouse
        mouse = pygame.mouse.get_pos()
