@@ -67,6 +67,8 @@ coordenada_zona_superior = (24, 0)
 coordenada_cajon_cerrado = (70, 180)
 coordenada_p_id = (450, 200)
 
+coordenada_bplay = (1000, 150)
+
 #Coordenadas de los botones de selección en la pantalla de fallos
 coordenada_fallo1 = (450,125)
 coordenada_fallo2 = (450,175)
@@ -120,6 +122,11 @@ loop_control_cerrado = False
 pantalla_errores = False
 usuario = ""
 seleccion_fallo = False
+reproducir = False
+pausa = False
+fin = 600
+vertical = False
+horizontal = False
 
 #Definir propiedades ventana principal
 ventana = pygame.display.set_mode(dimension_ventana)
@@ -290,6 +297,18 @@ bseleccionar = pygame.image.load('boton_seleccionar.png')
 baceptar = pygame.image.load('boton_aceptar.png')
 bcancelar = pygame.image.load('boton_cancelar.png')
 
+bplay = pygame.image.load('boton_play.png')
+bpausa = pygame.image.load('boton_pausa.png')
+
+velocidad_reproduccion = 10
+
+base = 17
+altura = 0
+baseH = 0
+alturaH = 15
+baseV = 17
+alturaV = 0 #15
+
 x = 262 #Valor inicial (nivel mínimo del tanque)
 hv = np.linspace(h0,hf,n)
 h = np.zeros([n])
@@ -437,9 +456,26 @@ while True:
          
                  seleccion_fallo = True     
               
+        if loop_control_cerrado:           
            
+           if evento.type == pygame.MOUSEBUTTONDOWN:
+              
+              mouse = pygame.mouse.get_pos()
+              
+              if 900 > mouse[0] > 850 and 190 > mouse[1] > 150:
+
+                 if fin < 600:
+                    pausa = True
+                    reproducir = False
+                    vertical = False
+                    fin = 600
+                 else:
+                    reproducir = True
+                    vertical = True
+                    pausa = False
        
-#Pantalla principal         
+#Pantalla principal    
+        
     if loop_ppal:
     
         
@@ -851,6 +887,73 @@ while True:
         ventana.blit(agua, (544, 202+ int(x))) 
         ventana.blit(bppal, (80, 660))
         ventana.blit(bfallos, (300, 660))
+        ventana.blit(bplay, (850, 150))
+
+        if reproducir:
+           ventana.blit(bpausa, (850, 150))
+           pygame.draw.rect(ventana, (0,162,232), (544, 465, base, altura))
+              
+           if vertical:
+                                
+              if abs(altura) >= 320:
+                 #altura = 0
+                 #reproducir = False
+                 fin = 601
+                 vertical = False
+                 horizontal = True
+                 """baseH = 0
+                 alturaH = 0
+                 baseV = 0
+                 alturaV = 0"""
+              else:
+                 if fin % velocidad_reproduccion == 0:
+                    altura -= 20
+
+              fin -= 1
+
+           elif horizontal:              
+              pygame.draw.rect(ventana, (0,162,232), (561, 144, baseH, alturaH))
+           
+              if baseH >= 200:
+                 #baseH = 20
+                 horizontal = False
+                 fin = 601
+                 """baseV = 0
+                 alturaV = 0"""
+              else:
+                 if fin % velocidad_reproduccion == 0:
+                    baseH += 20
+
+              fin -= 1
+
+           else:
+              pygame.draw.rect(ventana, (0,162,232), (561, 144, baseH, alturaH))
+           
+              pygame.draw.rect(ventana, (0,162,232), (744, 144, baseV, alturaV))
+           
+              if alturaV >= 50:
+                 #baseH = 20
+                 reproducir = False
+                 pausa = False
+                 fin = 601
+                 """base = 17
+                 altura = 0
+                 baseH = 0
+                 alturaH = 15
+                 baseV = 17
+                 alturaV = 15"""
+              else:
+                 if fin % velocidad_reproduccion == 0:
+                    alturaV += 20
+
+              fin -= 1
+
+        if pausa:
+
+           pygame.draw.rect(ventana, (0,162,232), (544, 465, base, altura))
+           pygame.draw.rect(ventana, (0,162,232), (561, 144, baseH, alturaH))
+           pygame.draw.rect(ventana, (0,162,232), (744, 144, baseV, alturaV))
+           ventana.blit(bplay, (850, 150))
 
 # Leer actividad de mouse
         mouse = pygame.mouse.get_pos()
@@ -1240,14 +1343,14 @@ while True:
             pantalla_errores = False
             
         
-        elif usuario == "profesor" and clave == "univalle123":
+        elif usuario == "p" and clave == "p":
             loop_ppal = False #True
             loop_sec = False
             autenticacion = False
             loop_ppal_medicion = False
             loop_sec_medicion = False
-            loop_control_cerrado=False
-            pantalla_errores = True
+            loop_control_cerrado=True
+            pantalla_errores = False
 
             
         elif usuario == "" and clave == "":
