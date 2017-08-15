@@ -12,6 +12,7 @@ import string
 string.ascii_uppercase
 from datetime import datetime
 import checkButtons #Clase que maneja botones de selección
+import random
 
 pygame.init()
 # Inicializar valores
@@ -121,6 +122,7 @@ animacion_tanque = False
 loop_control_cerrado = False
 pantalla_errores = False
 usuario = ""
+usuario_fallos = "profesor"
 seleccion_fallo = False
 reproducir = False
 pausa = False
@@ -128,7 +130,8 @@ fin = 600
 vertical = False
 horizontal = False
 vertical2 = False
-
+fallos_estudiante = False
+sistema = False
 #Definir propiedades ventana principal
 ventana = pygame.display.set_mode(dimension_ventana)
 pygame.display.set_caption("Tanque")
@@ -136,6 +139,8 @@ ventana.fill(color_fondo)
 reloj = pygame.time.Clock()
 myFont = pygame.font.SysFont("Times New Roman", 18, bold=True)
 #myFont2 = pygame.font.SysFont("Times New Roman", 18, bold=True, background = "white")
+anuncio = myFont.render("", 1, (255,0,0))
+fallo = myFont.render("", 1, (255,0,0))
 
 texto_fallo1= "FALLO 1"
 texto_fallo2= "FALLO 2"
@@ -145,6 +150,8 @@ texto_fallo5= "FALLO 5"
 texto_fallo6= "FALLO 6"
 texto_fallo7= "FALLO 7"
 texto_fallo8= "FALLO 8"
+
+lista_fallos = [texto_fallo1, texto_fallo2, texto_fallo3, texto_fallo4, texto_fallo5, texto_fallo6, texto_fallo7, texto_fallo8]
 
 fallo_seleccionado = ""
 
@@ -308,7 +315,7 @@ altura = 0
 baseH = 0
 alturaH = 15
 baseV = 17
-alturaV = 0 #15
+alturaV = 0
 
 x = 262 #Valor inicial (nivel mínimo del tanque)
 hv = np.linspace(h0,hf,n)
@@ -473,7 +480,27 @@ while True:
                     reproducir = True
                     vertical = True
                     pausa = False
-       
+      
+        if fallos_estudiante:
+
+           if evento.type == pygame.MOUSEBUTTONDOWN:
+
+              mouse = pygame.mouse.get_pos()
+              
+              if 620 > mouse[0] > 450 and 450 > mouse[1] > 400:
+
+                 loop_ppal=True
+                 loop_ppal_medicion=False
+                 loop_sec_medicion=False
+                 loop_sec=False  
+                 loop_control_cerrado=False
+                 pantalla_errores=False
+                 autenticacion=False
+                 cambiar_pantalla = False
+                 seleccion_fallo = False
+                 fallos_estudiante = False
+        
+
 #Pantalla principal    
         
     if loop_ppal:
@@ -541,39 +568,53 @@ while True:
 # Leer actividad de mouse
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
-        #print(mouse) 
-    
+        #print(mouse)
 
-# Click botón control        
-        if 250 > mouse[0] > 80 and 711 > mouse[1] > 660:
-           
-           if click[0] == 1: 
-                loop_ppal=False
-                loop_ppal_medicion=False
-                loop_sec_medicion=False
-                loop_sec=False  
-                loop_control_cerrado=True
-                pantalla_errores=False
-                autenticacion=False                                
-                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
-                time.sleep(0.5) #Pausa la ejecución del programa
-                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
-                
-# Click botón fallos
-        elif 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
-           
-           if click[0] == 1: 
-                loop_ppal=False
-                loop_ppal_medicion=False
-                loop_sec_medicion=False
-                loop_sec=False  
-                loop_control_cerrado=False
-                pantalla_errores=True
-                autenticacion=False               
-                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
-                time.sleep(0.5) #Pausa la ejecución del programa
-                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
-                
+        # Click botón fallos
+        if 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
+           #print(click[0])
+           if click[0]:  
+              if usuario == usuario_fallos:
+                 
+                    loop_ppal=False
+                    loop_ppal_medicion=False
+                    loop_sec_medicion=False
+                    loop_sec=False  
+                    pantalla_errores=True
+                    autenticacion=False 
+                    loop_control_cerrado=False
+                    fallos_estudiante = False
+                    pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                    time.sleep(0.5) #Pausa la ejecución del programa
+                    pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+        
+              else:
+
+                    loop_ppal=False
+                    loop_ppal_medicion=False
+                    loop_sec_medicion=False
+                    loop_sec=False  
+                    pantalla_errores=False
+                    autenticacion=False 
+                    loop_control_cerrado=False
+                    fallos_estudiante = True
+                    pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                    time.sleep(0.5) #Pausa la ejecución del programa
+                    pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+        # Click botón control        
+        elif 250 > mouse[0] > 80 and 711 > mouse[1] > 660:
+           if click[0]:
+              loop_ppal=False
+              loop_ppal_medicion=False
+              loop_sec_medicion=False
+              loop_sec=False  
+              loop_control_cerrado=True
+              pantalla_errores=False
+              autenticacion=False
+              pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+              time.sleep(0.5) #Pausa la ejecución del programa
+              pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento
+
 # Botones lado derecho
 
         # Mostrar multimetro
@@ -585,7 +626,7 @@ while True:
               loop_sec_medicion=False
               animacion_tanque=False
               loop_control_cerrado=False
-              pantalla_errores = False       
+              pantalla_errores = False        
         
         # Mostrar P&ID
         if 864 > mouse[0] > 750 and 118 > mouse[1] > 80:
@@ -737,17 +778,37 @@ while True:
         
         # Click botón fallos
         elif 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
-           if click[0] == 1: 
-                loop_ppal=False
-                loop_ppal_medicion=False
-                loop_sec_medicion=False
-                loop_sec=False  
-                pantalla_errores=True
-                autenticacion=False 
-                loop_control_cerrado=False                
-                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
-                time.sleep(0.5) #Pausa la ejecución del programa
-                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+           if click[0] == 1:
+
+              if usuario == usuario_fallos:
+                 
+                    loop_ppal=False
+                    loop_ppal_medicion=False
+                    loop_sec_medicion=False
+                    loop_sec=False  
+                    pantalla_errores=True
+                    autenticacion=False 
+                    loop_control_cerrado=False
+                    fallos_estudiante = False
+                    pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                    time.sleep(0.5) #Pausa la ejecución del programa
+                    pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+        
+              else:
+
+                    loop_ppal=False
+                    loop_ppal_medicion=False
+                    loop_sec_medicion=False
+                    loop_sec=False  
+                    pantalla_errores=False
+                    autenticacion=False 
+                    loop_control_cerrado=False
+                    fallos_estudiante = True
+                    pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                    time.sleep(0.5) #Pausa la ejecución del programa
+                    pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+        
+                  
 
 # Botones lado derecho
         
@@ -974,17 +1035,34 @@ while True:
         # Click botón Fallos
         elif 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
            if click[0] == 1:  
-                loop_ppal=False
-                loop_ppal_medicion=False
-                loop_sec_medicion=False
-                loop_sec=False  
-                loop_control_cerrado=False
-                pantalla_errores=True
-                autenticacion=False                
-                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
-                time.sleep(0.5) #Pausa la ejecución del programa
-                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
-                
+              if usuario == usuario_fallos:
+                 
+                    loop_ppal=False
+                    loop_ppal_medicion=False
+                    loop_sec_medicion=False
+                    loop_sec=False  
+                    pantalla_errores=True
+                    autenticacion=False 
+                    loop_control_cerrado=False
+                    fallos_estudiante = False
+                    pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                    time.sleep(0.5) #Pausa la ejecución del programa
+                    pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+        
+              else:
+
+                    loop_ppal=False
+                    loop_ppal_medicion=False
+                    loop_sec_medicion=False
+                    loop_sec=False  
+                    pantalla_errores=False
+                    autenticacion=False 
+                    loop_control_cerrado=False
+                    fallos_estudiante = True
+                    pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                    time.sleep(0.5) #Pausa la ejecución del programa
+                    pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+        
 # Mostrar descripción de campo        
         if 951 > mouse[0] > 540  and 649 > mouse[1] > 138:
             ventana.blit(anim, mouse)
@@ -1109,17 +1187,34 @@ while True:
         elif 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
            #print(click[0])
            if click[0]:  
-                loop_ppal=False
-                loop_ppal_medicion=False
-                loop_sec_medicion=False
-                loop_sec=False  
-                loop_control_cerrado=False
-                pantalla_errores=True
-                autenticacion=False
-                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
-                time.sleep(0.5) #Pausa la ejecución del programa
-                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
-                
+              if usuario == usuario_fallos:
+                 
+                    loop_ppal=False
+                    loop_ppal_medicion=False
+                    loop_sec_medicion=False
+                    loop_sec=False  
+                    pantalla_errores=True
+                    autenticacion=False 
+                    loop_control_cerrado=False
+                    fallos_estudiante = False
+                    pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                    time.sleep(0.5) #Pausa la ejecución del programa
+                    pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+        
+              else:
+
+                    loop_ppal=False
+                    loop_ppal_medicion=False
+                    loop_sec_medicion=False
+                    loop_sec=False  
+                    pantalla_errores=False
+                    autenticacion=False 
+                    loop_control_cerrado=False
+                    fallos_estudiante = True
+                    pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                    time.sleep(0.5) #Pausa la ejecución del programa
+                    pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+        
 # Cerrar sesion        
         if 152 > mouse[0] > 100 and 60 > mouse[1] > 10:
             ventana.blit(cerrars, mouse)
@@ -1228,17 +1323,34 @@ while True:
         elif 250 > mouse[0] > 80 and 711 > mouse[1] > 660:
            #print(click[0])
            if click[0]:  
-                loop_ppal=False
-                loop_ppal_medicion=False
-                loop_sec_medicion=False
-                loop_sec=False  
-                loop_control_cerrado=False
-                pantalla_errores=True
-                autenticacion=False
-                pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
-                time.sleep(0.5) #Pausa la ejecución del programa
-                pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
-                
+              if usuario == usuario_fallos:
+                 
+                    loop_ppal=False
+                    loop_ppal_medicion=False
+                    loop_sec_medicion=False
+                    loop_sec=False  
+                    pantalla_errores=True
+                    autenticacion=False 
+                    loop_control_cerrado=False
+                    fallos_estudiante = False
+                    pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                    time.sleep(0.5) #Pausa la ejecución del programa
+                    pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+        
+              else:
+
+                    loop_ppal=False
+                    loop_ppal_medicion=False
+                    loop_sec_medicion=False
+                    loop_sec=False  
+                    pantalla_errores=False
+                    autenticacion=False 
+                    loop_control_cerrado=False
+                    fallos_estudiante = True
+                    pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
+                    time.sleep(0.5) #Pausa la ejecución del programa
+                    pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
+        
         elif 152 > mouse[0] > 100 and 60 > mouse[1] > 10:
             ventana.blit(cerrars, mouse)
             if click[0] == 1:
@@ -1330,23 +1442,23 @@ while True:
         reloj.tick(fps)        
         
         
-        if usuario == "estudiante" and clave == "controlunivalle":
-            loop_ppal = False
+        if usuario == "estudiante" and clave == "estudiante":
+            loop_ppal = True
             loop_sec = False
             autenticacion = False 
             loop_ppal_medicion = False
             loop_sec_medicion = False
-            loop_control_cerrado= True
+            loop_control_cerrado= False
             pantalla_errores = False
             
         
-        elif usuario == "p" and clave == "p":
-            loop_ppal = False #True
+        elif usuario == "profesor" and clave == "profesor":
+            loop_ppal = True
             loop_sec = False
             autenticacion = False
             loop_ppal_medicion = False
             loop_sec_medicion = False
-            loop_control_cerrado=True
+            loop_control_cerrado=False
             pantalla_errores = False
 
             
@@ -1454,7 +1566,9 @@ while True:
         else:
 
            if not checkbox1.checked and not checkbox2.checked and not checkbox3.checked and not checkbox4.checked and not checkbox5.checked and not checkbox6.checked and not checkbox7.checked and not checkbox8.checked:
+
               anuncio = myFont.render("Usted NO ha seleccionado fallo alguno.", 1, (255,0,0))
+                            
               ventana.fill(color_fondo)
               ventana.blit(banersup, coordenada_banersup)
               ventana.blit(logo, coordenada_logo)
@@ -1467,21 +1581,23 @@ while True:
               ventana.blit(anuncio, (400, 300))
               ventana.blit(baceptar, (450, 350))
 
+              #Click botón Aceptar
               if 620 > mouse[0] > 450 and 400 > mouse[1] > 350 and click[0]:
-                 loop_ppal=True
+
+                 loop_ppal=False
                  loop_ppal_medicion=False
                  loop_sec_medicion=False
                  loop_sec=False  
                  loop_control_cerrado=False
-                 pantalla_errores=False
+                 pantalla_errores=True
                  autenticacion=False
                  cambiar_pantalla = False
                  seleccion_fallo = False
+                 fallo_seleccionado = ""
                  pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
                  time.sleep(0.5) #Pausa la ejecución del programa
                  pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
-                 
-              
+
            else:
               anuncio = myFont.render("Usted ha seleccionado el fallo:", 1, (255,0,0))
               fallo = myFont.render(fallo_seleccionado, 1, (255,0,0))
@@ -1498,21 +1614,23 @@ while True:
               ventana.blit(fallo, (470,350))
               ventana.blit (bcancelar, (300, 400))
               ventana.blit (baceptar, (550, 400))
-
+              
+              #Click botón Aceptar
               if 720 > mouse[0] > 550 and 450 > mouse[1] > 400 and click[0]:
-                 loop_ppal=False
+                 loop_ppal=True
                  loop_ppal_medicion=False
                  loop_sec_medicion=False
                  loop_sec=False  
                  loop_control_cerrado=False
-                 pantalla_errores=True
+                 pantalla_errores=False
                  autenticacion=False
                  cambiar_pantalla = False
                  seleccion_fallo = False
                  pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
                  time.sleep(0.5) #Pausa la ejecución del programa
                  pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
-                 
+              
+              #Click botón Cancelar   
               elif 470 > mouse[0] > 300 and 450 > mouse[1] > 400 and click[0]:
                  loop_ppal=False
                  loop_ppal_medicion=False
@@ -1522,16 +1640,96 @@ while True:
                  pantalla_errores=True
                  autenticacion=False
                  cambiar_pantalla = False
-                 seleccion_fallo = False
+                 seleccion_fallo = False                 
+                 fallo_seleccionado = ""
+                 checkbox1 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo1, texto_fallo1)
+                 checkbox2 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo2, texto_fallo2)
+                 checkbox3 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo3, texto_fallo3) 
+                 checkbox4 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo4, texto_fallo4) 
+                 checkbox5 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo5, texto_fallo5) 
+                 checkbox6 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo6, texto_fallo6)
+                 checkbox7 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo7, texto_fallo7)
+                 checkbox8 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo8, texto_fallo8)
+
                  pygame.event.clear() #Borra todos los eventos que ocurrieron hasta el momento 
                  time.sleep(0.5) #Pausa la ejecución del programa
-                 pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento                
+                 pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento
+
            
-        
         pygame.display.update()
         pygame.display.flip()               
         ventana.fill(color_fondo)
         reloj.tick(fps) 
+
+    if fallos_estudiante:
+
+       if fallo_seleccionado == "":
+          fallo_seleccionado = random.choice(lista_fallos)
+          checkbox1 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo1, texto_fallo1)
+          checkbox2 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo2, texto_fallo2)
+          checkbox3 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo3, texto_fallo3) 
+          checkbox4 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo4, texto_fallo4) 
+          checkbox5 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo5, texto_fallo5) 
+          checkbox6 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo6, texto_fallo6)
+          checkbox7 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo7, texto_fallo7)
+          checkbox8 = checkButtons.Checkbox(ventana, dimension_boton_seleccion, coordenada_fallo8, texto_fallo8)
+
+          sistema = True
+       else:
+          if sistema:
+             anuncio = myFont.render("El sistema ha seleccionado el fallo:", 1, (255,0,0))
+             fallo = myFont.render(fallo_seleccionado, 1, (255,0,0))
+          else:
+             anuncio = myFont.render("El docente ha seleccionado el fallo:", 1, (255,0,0))
+             fallo = myFont.render(fallo_seleccionado, 1, (255,0,0))
+             sistema = False
+          
+       ventana.fill(color_fondo)
+       ventana.blit(banersup, coordenada_banersup)
+       ventana.blit(logo, coordenada_logo)
+       ventana.blit(titulofallos, coordenada_titulo)
+       ventana.blit(cerrarsesion, coordenada_cerrarsesion) 
+       ventana.blit(usuario2, (180, 18))
+       ventana.blit(mostrar_hora, (180, 37))
+       ventana.blit(tapar_hora, (247, 37))
+       ventana.blit(banerinf, coordenada_banerinf)
+       ventana.blit(anuncio, (400, 300))
+       ventana.blit(fallo, (470, 350))
+       ventana.blit(baceptar, (450, 400))
+
+       # Leer actividad de mouse
+       mouse = pygame.mouse.get_pos()
+       click = pygame.mouse.get_pressed()        
+       #print(mouse)
+        
+       # Cerrar sesion        
+       if 152 > mouse[0] > 100 and 60 > mouse[1] > 10:
+          ventana.blit(cerrars, mouse)
+          if click[0] == 1:
+              variable_cerrarsesion = 1
+
+       elif 970 > mouse[0] > 640 and 60 > mouse[1] > 15:
+          ventana.blit(pantallaact, mouse)
+        
+       elif 70 > mouse[0] > 0 and 70 > mouse[1] > 0:
+            ventana.blit(logouv1, mouse)
+        
+        
+       # Cerrar sesión e ir a pantalla de autenticación              
+       if variable_cerrarsesion == 1:
+          loop_ppal=False
+          loop_ppal_medicion=False
+          loop_sec_medicion=False
+          loop_sec=False  
+          loop_control_cerrado=False
+          pantalla_errores=False
+          autenticacion=True
+
+       
+       pygame.display.update()
+       pygame.display.flip()               
+       ventana.fill(color_fondo)
+       reloj.tick(fps) 
 
         
                                  
