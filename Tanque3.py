@@ -52,6 +52,14 @@ coordenada_cableverdeSup = [146, 458]
 coordenada_cablenegroSup = [169, 458]
 posicion_inicial_cable = (0, 0)
 
+#Coordenadas de los cables del multimetro
+coordenada_cablemultimetro = [870, 265]
+coordenada_cable2multimetro = [900, 265]
+
+#Coordenadas del botón corriente y el botón voltaje
+coordenada_bcorriente = [767, 215]
+coordenada_bvoltaje = [792, 215]
+
 coordenada_fuente24 = (650, 145)
 coordenada_canaleta_1 = (78, 400)
 coordenada_canaleta_2 = (-4, 10)
@@ -153,6 +161,12 @@ arrastrar_azulSup = False
 arrastrar_verdeSup = False
 arrastrar_negroSup = False
 
+arrastrar_cablemultimetro = False
+arrastrar_cable2multimetro = False
+
+seleccion_corriente = False
+seleccion_voltaje = False
+
 #Definir propiedades ventana principal
 ventana = pygame.display.set_mode(dimension_ventana)
 pygame.display.set_caption("Tanque")
@@ -160,8 +174,8 @@ ventana.fill(color_fondo)
 reloj = pygame.time.Clock()
 myFont = pygame.font.SysFont("Times New Roman", 18, bold=True)
 #myFont2 = pygame.font.SysFont("Times New Roman", 18, bold=True, background = "white")
-anuncio = myFont.render("", 1, (255,0,0))
-fallo = myFont.render("", 1, (255,0,0))
+anuncio = myFont.render("", 1, blue)
+fallo = myFont.render("", 1, blue)
 
 texto_fallo1= "FALLO 1"
 texto_fallo2= "FALLO 2"
@@ -300,6 +314,25 @@ def posicion_cable(mouse_x):
     elif 1024 >= mouse_x >= 420:
        return 418
 
+def posicion_cable_multimetro(mouse_x):
+
+    if 784 >= mouse_x >= 0:
+       return 760
+    elif 811 >= mouse_x >= 785:
+       return 786
+    elif 844 >= mouse_x >= 812:
+       return 810
+    elif 894 >= mouse_x >= 845:
+       return 870
+    elif 1024 >= mouse_x >= 895:
+       return 900
+
+def limite_multimetro(mouse_x):
+   if mouse_x + pos_x <= 900 and mouse_x + pos_x >= 750:
+      return True
+   else:
+      return False
+
 def limite(mouse_x):
    if mouse_x + pos_x <= 430 and mouse_x + pos_x >= 88:
       return True
@@ -387,6 +420,9 @@ alturaH = 15
 baseV = 17
 alturaV = 0
 
+ancho_boton = 16
+alto_boton = 6
+
 pos_x = 0
 pos_y = 0
 
@@ -411,7 +447,11 @@ while True:
     bomba1 = myFont.render("Bomba", True, blue)
     reser = myFont.render("Reservorio", True, blue) 
     sen = myFont.render("Transmisor", True, blue)
-    diag_pid = myFont.render("Diagrama P&ID", True, blue)      
+    diag_pid = myFont.render("Diagrama P&ID", True, blue)
+
+    voltaje = myFont.render("Voltaje", True, blue)
+    corriente = myFont.render("Corriente", True, blue)
+
         
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
@@ -556,13 +596,33 @@ while True:
                     
         if loop_sec_medicion:
 
-           if evento.type == pygame.MOUSEBUTTONDOWN:
-
-              mouse = pygame.mouse.get_pos()               
+           if evento.type == pygame.MOUSEBUTTONDOWN:                           
               
               if evento.button == 1:
-                 
-                 if coordenada_cablerojoInf[0]+28 > mouse[0] > coordenada_cablerojoInf[0] and coordenada_cablerojoInf[1]+100 > mouse[1] > coordenada_cablerojoInf[1]:
+
+                 mouse = pygame.mouse.get_pos()  
+
+                 if coordenada_bcorriente[0] + ancho_boton > mouse[0] > coordenada_bcorriente[0] and coordenada_bcorriente[1] + alto_boton > mouse[1] > coordenada_bcorriente[1]:
+                    seleccion_corriente = True
+                    seleccion_voltaje = False
+                    
+                 elif coordenada_bvoltaje[0] + ancho_boton > mouse[0] > coordenada_bvoltaje[0] and coordenada_bvoltaje[1] + alto_boton > mouse[1] > coordenada_bvoltaje[1]:
+                    seleccion_voltaje = True
+                    seleccion_corriente = False
+
+                 elif coordenada_cablemultimetro[0]+28 > mouse[0] > coordenada_cablemultimetro[0] and coordenada_cablemultimetro[1]+100 > mouse[1] > coordenada_cablemultimetro[1]:
+
+                    arrastrar_cablemultimetro = True
+                    posicion_inicial_cable = mouse
+                    pos_x = coordenada_cablemultimetro[0] - mouse[0]
+                    
+                 elif coordenada_cable2multimetro[0]+28 > mouse[0] > coordenada_cable2multimetro[0] and coordenada_cable2multimetro[1]+100 > mouse[1] > coordenada_cable2multimetro[1]:
+
+                    arrastrar_cable2multimetro = True
+                    posicion_inicial_cable = mouse
+                    pos_x = coordenada_cable2multimetro[0] - mouse[0]
+                    
+                 elif coordenada_cablerojoInf[0]+28 > mouse[0] > coordenada_cablerojoInf[0] and coordenada_cablerojoInf[1]+100 > mouse[1] > coordenada_cablerojoInf[1]:
 
                     arrastrar_rojoInf = True
                     posicion_inicial_cable = mouse
@@ -614,9 +674,31 @@ while True:
               
               if evento.button == 1:
 
-                 mouse = pygame.mouse.get_pos()               
-                 
-                 if arrastrar_rojoInf:
+                 mouse = pygame.mouse.get_pos()
+
+                 if arrastrar_cablemultimetro:
+                    
+                    arrastrar_cablemultimetro = False
+
+                    nuevaposicion = posicion_cable_multimetro(mouse[0])
+                    
+                    if nuevaposicion != coordenada_cable2multimetro[0]:
+                       coordenada_cablemultimetro[0] = nuevaposicion
+                    else:
+                       coordenada_cablemultimetro[0] = posicion_cable_multimetro(posicion_inicial_cable[0])
+
+                 elif arrastrar_cable2multimetro:
+
+                    arrastrar_cable2multimetro = False
+
+                    nuevaposicion = posicion_cable_multimetro(mouse[0])
+                    
+                    if nuevaposicion != coordenada_cablemultimetro[0]:
+                       coordenada_cable2multimetro[0] = nuevaposicion
+                    else:
+                       coordenada_cable2multimetro[0] = posicion_cable_multimetro(posicion_inicial_cable[0])
+                    
+                 elif arrastrar_rojoInf:
                  
                     arrastrar_rojoInf = False
 
@@ -727,9 +809,17 @@ while True:
                        
            elif evento.type == pygame.MOUSEMOTION:
 
-              mouse = pygame.mouse.get_pos()               
+              mouse = pygame.mouse.get_pos()
+
+              if arrastrar_cablemultimetro and limite_multimetro(mouse[0]):
                  
-              if arrastrar_rojoInf and limite(mouse[0]):
+                 coordenada_cablemultimetro[0] = mouse[0] + pos_x
+                 
+              elif arrastrar_cable2multimetro and limite_multimetro(mouse[0]):
+                 
+                 coordenada_cable2multimetro[0] = mouse[0] + pos_x
+              
+              elif arrastrar_rojoInf and limite(mouse[0]):
                  
                  coordenada_cablerojoInf[0] = mouse[0] + pos_x
                  coordenada_texcablerojoInf[0] = mouse[0] + pos_x + 3
@@ -1555,7 +1645,9 @@ while True:
         ventana.blit(canaleta_2, coordenada_canaleta_4)
         ventana.blit(canaleta_2, coordenada_canaleta_2)
         ventana.blit(plc, coordenada_plc)
-        ventana.blit(multimetro, coordenada_multimetro)
+        ventana.blit(multimetro, (coordenada_multimetro[0]-50, coordenada_multimetro[1]))
+        ventana. blit(cablenegro, coordenada_cablemultimetro)
+        ventana. blit(cablerojo, coordenada_cable2multimetro)        
         ventana.blit(bornera1, coordenada_bornera1)
         ventana.blit(cablerojo, (coordenada_cablerojoInf[0], coordenada_cablerojoInf[1]))
         ventana.blit(cableazul, (coordenada_cableazulInf[0], coordenada_cableazulInf[1]))
@@ -1579,6 +1671,24 @@ while True:
         ventana.blit(tapar_hora, (247, 37))
         ventana.blit(bppal, (80, 660))
         ventana.blit(bfallos, (300, 660))
+
+        if seleccion_corriente:
+           bcorriente = pygame.draw.rect(ventana, blue, (coordenada_bcorriente[0], coordenada_bcorriente[1], ancho_boton, alto_boton))
+           anuncio = myFont.render("Modo Corriente Activado", True, (255,0,0))
+           ayuda = myFont.render("Recuerda ubicar los cables en el multimetro", True, blue)
+           ayuda2 = myFont.render("de la manera correcta", True, blue)           
+           ventana.blit(anuncio, (560, 500))
+           ventana.blit(ayuda, (500, 540))
+           ventana.blit(ayuda2, (500, 560))
+           
+        if seleccion_voltaje:
+           bvoltaje = pygame.draw.rect(ventana, blue, (coordenada_bvoltaje[0], coordenada_bvoltaje[1], ancho_boton, alto_boton))
+           anuncio = myFont.render("Modo Voltaje Activado", True, (255,0,0))
+           ayuda = myFont.render("Recuerda ubicar los cables en el multimetro", True, blue)
+           ayuda2 = myFont.render("de la manera correcta", True, blue)           
+           ventana.blit(anuncio, (560, 500))
+           ventana.blit(ayuda, (500, 540))
+           ventana.blit(ayuda2, (500, 560))
         
 # Marquillas del cableado   
         texto = myFont.render("Vcc", True, black)
@@ -1652,8 +1762,14 @@ while True:
         elif 152 > mouse[0] > 100 and 60 > mouse[1] > 10:
             ventana.blit(cerrars, mouse)
             if click[0] == 1:
-                 variable_cerrarsesion = 1  
-                
+                 variable_cerrarsesion = 1
+
+        elif coordenada_bcorriente[0] + ancho_boton > mouse[0] > coordenada_bcorriente[0] and coordenada_bcorriente[1] + alto_boton > mouse[1] > coordenada_bcorriente[1]:
+            ventana.blit(corriente, mouse)
+                    
+        elif coordenada_bvoltaje[0] + ancho_boton > mouse[0] > coordenada_bvoltaje[0] and coordenada_bvoltaje[1] + alto_boton > mouse[1] > coordenada_bvoltaje[1]:
+            ventana.blit(voltaje, mouse)                   
+        
 #Mostrar descripcion de campo
 
         elif 970 > mouse[0] > 640 and 60 > mouse[1] > 15:
@@ -1672,7 +1788,7 @@ while True:
             autenticacion=True
            
 # Medición de voltaje        
-        if 860 > mouse[0] > 840 and 225 > mouse[1] > 210:
+        if 810 > mouse[0] > 790 and 225 > mouse[1] > 210:
            if click[0] == 1: 
              variable_cambio_sec = 2    
              pygame.draw.line(ventana, (30, 0, 20), origen, evento.pos, 5)
@@ -1897,7 +2013,7 @@ while True:
                  pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
 
            else:
-              anuncio = myFont.render("Usted ha seleccionado el fallo:", 1, (255,0,0))
+              anuncio = myFont.render("Usted ha seleccionado el fallo:", 1, blue)
               fallo = myFont.render(fallo_seleccionado, 1, (255,0,0))
               ventana.fill(color_fondo)
               ventana.blit(banersup, coordenada_banersup)
@@ -1975,13 +2091,13 @@ while True:
           sistema = True
        else:
           if sistema:
-             anuncio = myFont.render("El sistema ha seleccionado el fallo:", 1, (255,0,0))
-             fallo = myFont.render(fallo_seleccionado, 1, (255,0,0))
+             anuncio = myFont.render("El sistema ha seleccionado el fallo:", 1, blue)
+             fallo = myFont.render(fallo_seleccionado, 1, blue)
              ventana.blit(baceptar, (570, 400))
              ventana.blit(bcambiar, (320, 400))
           else:
-             anuncio = myFont.render("El docente ha seleccionado el fallo:", 1, (255,0,0))
-             fallo = myFont.render(fallo_seleccionado, 1, (255,0,0))
+             anuncio = myFont.render("El docente ha seleccionado el fallo:", 1, blue)
+             fallo = myFont.render(fallo_seleccionado, 1, blue)
              sistema = False
              ventana.blit(baceptar, (450, 400))
        
