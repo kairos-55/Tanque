@@ -36,13 +36,23 @@ coordenada_multimetro = (800, 150)
 coordenada_sensor = (300, 353)
 coordenada_plc = (110, 145)
 coordenada_bornera1 = (100, 530)
-coordenada_cablerojo = (102, 568)
-coordenada_cableazul = (125, 568)
-coordenada_cableverde = (146, 568)
-coordenada_cablenegro = (169, 568)
+
+#Coordenadas de los cables inferiores y sus textos
+coordenada_cablerojoInf = [102, 568]
+coordenada_cableazulInf = [125, 568]
+coordenada_cableverdeInf = [146, 568]
+coordenada_cablenegroInf = [169, 568]
+coordenada_texcablerojoInf = [105, 610]
+coordenada_texcableverdeInf = [149, 605]
+
+#Coordenadas de los cables superiores y sus textos
+coordenada_cablerojoSup = [102, 458]
+coordenada_cableazulSup = [125, 458]
+coordenada_cableverdeSup = [146, 458]
+coordenada_cablenegroSup = [169, 458]
+posicion_inicial_cable = (0, 0)
+
 coordenada_fuente24 = (650, 145)
-coordenada_texcablerojo = (105, 610)
-coordenada_texcableverde = (149, 605)
 coordenada_canaleta_1 = (78, 400)
 coordenada_canaleta_2 = (-4, 10)
 coordenada_canaleta_3 = (78, 40)
@@ -132,6 +142,17 @@ horizontal = False
 vertical2 = False
 fallos_estudiante = False
 sistema = False
+
+arrastrar_rojoInf = False
+arrastrar_azulInf = False
+arrastrar_verdeInf = False
+arrastrar_negroInf = False
+
+arrastrar_rojoSup = False
+arrastrar_azulSup = False
+arrastrar_verdeSup = False
+arrastrar_negroSup = False
+
 #Definir propiedades ventana principal
 ventana = pygame.display.set_mode(dimension_ventana)
 pygame.display.set_caption("Tanque")
@@ -246,6 +267,45 @@ class Input:
       return ''.join(current_string)
 # Fin digitar usuario y contraseña
 
+def posicion_cable(mouse_x):
+
+    if 126 >= mouse_x >= 0:
+       return 102
+    elif 149 >= mouse_x >= 127:
+       return 125
+    elif 171 >= mouse_x >= 150:
+       return 146
+    elif 194 >= mouse_x >= 172:
+       return 169
+    elif 217 >= mouse_x >= 195:
+       return 192
+    elif 239 >= mouse_x >= 218:
+       return 215
+    elif 261 >= mouse_x >= 240:
+       return 238
+    elif 284 >= mouse_x >= 262:
+       return 260
+    elif 306 >= mouse_x >= 285:
+       return 282
+    elif 329 >= mouse_x >= 307:
+       return 305
+    elif 352 >= mouse_x >= 330:
+       return 327
+    elif 374 >= mouse_x >= 353:
+       return 350
+    elif 396 >= mouse_x >= 375:
+       return 372
+    elif 419 >= mouse[0] >= 397:
+       return 395
+    elif 1024 >= mouse_x >= 420:
+       return 418
+
+def limite(mouse_x):
+   if mouse_x + pos_x <= 430 and mouse_x + pos_x >= 88:
+      return True
+   else:
+      return False
+   
 #cargar imagenes 
 tanque = pygame.image.load('tanque_ppal.png')
 logo = pygame.image.load('logoUV.png')
@@ -261,10 +321,19 @@ multimetro = pygame.image.load('imagen2.png')
 sensor = pygame.image.load('sensor_flujo2.png')
 plc = pygame.image.load('koyo_3d_1.png')
 bornera1 = pygame.image.load('00450.png')
+
+#Imagenes de los cables inferiores
 cablerojo = pygame.image.load('cablerojo3.png')
 cableazul = pygame.image.load('cableazul3.png')
 cableverde = pygame.image.load('cableverde3.png')
 cablenegro = pygame.image.load('cablenegro3.png')
+
+#imagenes de los cables superiores
+cablerojo2 = pygame.transform.rotate(cablerojo, 180)
+cableazul2 = pygame.transform.rotate(cableazul, 180)
+cableverde2 = pygame.transform.rotate(cableverde, 180)
+cablenegro2 = pygame.transform.rotate(cablenegro, 180)
+        
 fuente24 = pygame.image.load('fuente24.png')
 canaleta_1 = pygame.image.load('canaleta_1.png')
 canaleta_2 = pygame.image.load('canaleta_2.png')
@@ -317,6 +386,9 @@ baseH = 0
 alturaH = 15
 baseV = 17
 alturaV = 0
+
+pos_x = 0
+pos_y = 0
 
 x = 262 #Valor inicial (nivel mínimo del tanque)
 hv = np.linspace(h0,hf,n)
@@ -481,7 +553,217 @@ while True:
                     reproducir = True
                     vertical = True
                     pausa = False
-      
+                    
+        if loop_sec_medicion:
+
+           if evento.type == pygame.MOUSEBUTTONDOWN:
+
+              mouse = pygame.mouse.get_pos()               
+              
+              if evento.button == 1:
+                 
+                 if coordenada_cablerojoInf[0]+28 > mouse[0] > coordenada_cablerojoInf[0] and coordenada_cablerojoInf[1]+100 > mouse[1] > coordenada_cablerojoInf[1]:
+
+                    arrastrar_rojoInf = True
+                    posicion_inicial_cable = mouse
+                    pos_x = coordenada_cablerojoInf[0] - mouse[0]
+                    
+                 elif coordenada_cablerojoSup[0]+28 > mouse[0] > coordenada_cablerojoSup[0] and coordenada_cablerojoSup[1]+100 > mouse[1] > coordenada_cablerojoSup[1]:
+
+                    arrastrar_rojoSup = True
+                    posicion_inicial_cable = mouse
+                    pos_x = coordenada_cablerojoSup[0] - mouse[0]
+                    
+                 elif coordenada_cableazulInf[0]+28 > mouse[0] > coordenada_cableazulInf[0] and coordenada_cableazulInf[1]+100 > mouse[1] > coordenada_cableazulInf[1]:
+
+                    arrastrar_azulInf = True
+                    posicion_inicial_cable = mouse
+                    pos_x = coordenada_cableazulInf[0] - mouse[0]
+                    
+                 elif coordenada_cableazulSup[0]+28 > mouse[0] > coordenada_cableazulSup[0] and coordenada_cableazulSup[1]+100 > mouse[1] > coordenada_cableazulSup[1]:
+
+                    arrastrar_azulSup = True
+                    posicion_inicial_cable = mouse
+                    pos_x = coordenada_cableazulSup[0] - mouse[0]
+                    
+                 elif coordenada_cableverdeInf[0]+28 > mouse[0] > coordenada_cableverdeInf[0] and coordenada_cableverdeInf[1]+100 > mouse[1] > coordenada_cableverdeInf[1]:
+
+                    arrastrar_verdeInf = True
+                    posicion_inicial_cable = mouse
+                    pos_x = coordenada_cableverdeInf[0] - mouse[0]
+                    
+                 elif coordenada_cableverdeSup[0]+28 > mouse[0] > coordenada_cableverdeSup[0] and coordenada_cableverdeSup[1]+100 > mouse[1] > coordenada_cableverdeSup[1]:
+
+                    arrastrar_verdeSup = True
+                    posicion_inicial_cable = mouse
+                    pos_x = coordenada_cableverdeSup[0] - mouse[0]
+                    
+                 elif coordenada_cablenegroInf[0]+28 > mouse[0] > coordenada_cablenegroInf[0] and coordenada_cablenegroInf[1]+100 > mouse[1] > coordenada_cablenegroInf[1]:
+
+                    arrastrar_negroInf = True
+                    posicion_inicial_cable = mouse
+                    pos_x = coordenada_cablenegroInf[0] - mouse[0]
+                    
+                 elif coordenada_cablenegroSup[0]+28 > mouse[0] > coordenada_cablenegroSup[0] and coordenada_cablenegroSup[1]+100 > mouse[1] > coordenada_cablenegroSup[1]:
+
+                    arrastrar_negroSup = True
+                    posicion_inicial_cable = mouse
+                    pos_x = coordenada_cablenegroSup[0] - mouse[0]
+
+           elif evento.type == pygame.MOUSEBUTTONUP:
+              
+              if evento.button == 1:
+
+                 mouse = pygame.mouse.get_pos()               
+                 
+                 if arrastrar_rojoInf:
+                 
+                    arrastrar_rojoInf = False
+
+                    lista_coordenadas_cablesInf = (coordenada_cableazulInf[0], coordenada_cableverdeInf[0], coordenada_cablenegroInf[0])
+               
+                    nuevaposicion = posicion_cable(mouse[0])
+                    
+                    if nuevaposicion in lista_coordenadas_cablesInf:
+                       coordenada_cablerojoInf[0] = posicion_cable(posicion_inicial_cable[0])
+                       coordenada_texcablerojoInf[0] = posicion_cable(posicion_inicial_cable[0]) + 3
+                    else:
+                       coordenada_cablerojoInf[0] = posicion_cable(mouse[0])
+                       coordenada_texcablerojoInf[0] = posicion_cable(mouse[0]) + 3
+
+                 elif arrastrar_rojoSup:
+
+                    arrastrar_rojoSup = False
+                 
+                    lista_coordenadas_cablesSup = (coordenada_cableazulSup[0], coordenada_cableverdeSup[0], coordenada_cablenegroSup[0])
+               
+                    nuevaposicion = posicion_cable(mouse[0])
+                    
+                    if nuevaposicion in lista_coordenadas_cablesSup:
+                       coordenada_cablerojoSup[0] = posicion_cable(posicion_inicial_cable[0])
+                    else:
+                       coordenada_cablerojoSup[0] = posicion_cable(mouse[0])
+
+                 elif arrastrar_azulInf:
+                 
+                    arrastrar_azulInf = False
+
+                    lista_coordenadas_cablesInf = (coordenada_cablerojoInf[0], coordenada_cableverdeInf[0], coordenada_cablenegroInf[0])
+               
+                    nuevaposicion = posicion_cable(mouse[0])
+                    
+                    if nuevaposicion in lista_coordenadas_cablesInf:
+                       coordenada_cableazulInf[0] = posicion_cable(posicion_inicial_cable[0])
+                    else:
+                       coordenada_cableazulInf[0] = posicion_cable(mouse[0])
+                       
+                 elif arrastrar_azulSup:
+
+                    arrastrar_azulSup = False
+                 
+                    lista_coordenadas_cablesSup = (coordenada_cablerojoSup[0], coordenada_cableverdeSup[0], coordenada_cablenegroSup[0])
+               
+                    nuevaposicion = posicion_cable(mouse[0])
+                    
+                    if nuevaposicion in lista_coordenadas_cablesSup:
+                       coordenada_cableazulSup[0] = posicion_cable(posicion_inicial_cable[0])
+                    else:
+                       coordenada_cableazulSup[0] = posicion_cable(mouse[0])
+
+                 elif arrastrar_verdeInf:
+                 
+                    arrastrar_verdeInf = False
+
+                    lista_coordenadas_cablesInf = (coordenada_cableazulInf[0], coordenada_cablerojoInf[0], coordenada_cablenegroInf[0])
+               
+                    nuevaposicion = posicion_cable(mouse[0])
+                    
+                    if nuevaposicion in lista_coordenadas_cablesInf:
+                       coordenada_cableverdeInf[0] = posicion_cable(posicion_inicial_cable[0])
+                       coordenada_texcableverdeInf[0] = posicion_cable(posicion_inicial_cable[0]) + 3
+                    else:
+                       coordenada_cableverdeInf[0] = posicion_cable(mouse[0])
+                       coordenada_texcableverdeInf[0] = posicion_cable(mouse[0]) + 3
+
+                 elif arrastrar_verdeSup:
+
+                    arrastrar_verdeSup = False
+                 
+                    lista_coordenadas_cablesSup = (coordenada_cableazulSup[0], coordenada_cablerojoSup[0], coordenada_cablenegroSup[0])
+               
+                    nuevaposicion = posicion_cable(mouse[0])
+                    
+                    if nuevaposicion in lista_coordenadas_cablesSup:
+                       coordenada_cableverdeSup[0] = posicion_cable(posicion_inicial_cable[0])
+                    else:
+                       coordenada_cableverdeSup[0] = posicion_cable(mouse[0])
+
+                 elif arrastrar_negroInf:
+                 
+                    arrastrar_negroInf = False
+
+                    lista_coordenadas_cablesInf = (coordenada_cableazulInf[0], coordenada_cableverdeInf[0], coordenada_cablerojoInf[0])
+               
+                    nuevaposicion = posicion_cable(mouse[0])
+                    
+                    if nuevaposicion in lista_coordenadas_cablesInf:
+                       coordenada_cablenegroInf[0] = posicion_cable(posicion_inicial_cable[0])
+                    else:
+                       coordenada_cablenegroInf[0] = posicion_cable(mouse[0])
+                       
+                 elif arrastrar_negroSup:
+
+                    arrastrar_negroSup = False
+                 
+                    lista_coordenadas_cablesSup = (coordenada_cableazulSup[0], coordenada_cableverdeSup[0], coordenada_cablenegroSup[0])
+               
+                    nuevaposicion = posicion_cable(mouse[0])
+                    
+                    if nuevaposicion in lista_coordenadas_cablesSup:
+                       coordenada_cablenegroSup[0] = posicion_cable(posicion_inicial_cable[0])
+                    else:
+                       coordenada_cablenegroSup[0] = posicion_cable(mouse[0])
+   
+                       
+           elif evento.type == pygame.MOUSEMOTION:
+
+              mouse = pygame.mouse.get_pos()               
+                 
+              if arrastrar_rojoInf and limite(mouse[0]):
+                 
+                 coordenada_cablerojoInf[0] = mouse[0] + pos_x
+                 coordenada_texcablerojoInf[0] = mouse[0] + pos_x + 3
+
+              elif arrastrar_rojoSup and limite(mouse[0]):
+                 
+                 coordenada_cablerojoSup[0] = mouse[0] + pos_x
+
+              elif arrastrar_azulInf and limite(mouse[0]):
+                 
+                 coordenada_cableazulInf[0] = mouse[0] + pos_x
+                 
+              elif arrastrar_azulSup and limite(mouse[0]):
+                 
+                 coordenada_cableazulSup[0] = mouse[0] + pos_x
+
+              if arrastrar_verdeInf and limite(mouse[0]):
+                 
+                 coordenada_cableverdeInf[0] = mouse[0] + pos_x
+                 coordenada_texcableverdeInf[0] = mouse[0] + pos_x + 3
+
+              elif arrastrar_verdeSup and limite(mouse[0]):
+                 
+                 coordenada_cableverdeSup[0] = mouse[0] + pos_x
+
+              if arrastrar_negroInf and limite(mouse[0]):
+                 
+                 coordenada_cablenegroInf[0] = mouse[0] + pos_x
+                 
+              elif arrastrar_negroSup and limite(mouse[0]):
+                 
+                 coordenada_cablenegroSup[0] = mouse[0] + pos_x
+
+           
         if fallos_estudiante:
 
            if evento.type == pygame.MOUSEBUTTONDOWN:
@@ -1147,27 +1429,21 @@ while True:
 #Pantalla control    
     if loop_sec:
 
-        
         ventana.blit(canaleta_2, coordenada_canaleta_4)
         ventana.blit(canaleta_2, coordenada_canaleta_2)
         ventana.blit(plc, coordenada_plc)
         #ventana.blit(multimetro, coordenada_multimetro)
         ventana.blit(bornera1, coordenada_bornera1)
-        ventana.blit(cablerojo, coordenada_cablerojo)
-        ventana.blit(cableazul, coordenada_cableazul)
-        ventana.blit(cableverde, coordenada_cableverde)
-        ventana.blit(cablenegro, coordenada_cablenegro)
+        ventana.blit(cablerojo, (coordenada_cablerojoInf[0], coordenada_cablerojoInf[1]))
+        ventana.blit(cableazul, (coordenada_cableazulInf[0], coordenada_cableazulInf[1]))
+        ventana.blit(cableverde, (coordenada_cableverdeInf[0], coordenada_cableverdeInf[1]))
+        ventana.blit(cablenegro, (coordenada_cablenegroInf[0], coordenada_cablenegroInf[1]))       
         ventana.blit(banerinf, coordenada_banerinf)
         ventana.blit(fuente24, coordenada_fuente24)
-    
-        cablerojo2 = pygame.transform.rotate(cablerojo, 180)
-        ventana.blit(cablerojo2, (102, 458))
-        cableazul2 = pygame.transform.rotate(cableazul, 180)
-        ventana.blit(cableazul2, (125, 458))
-        cableverde2 = pygame.transform.rotate(cableverde, 180)
-        ventana.blit(cableverde2, (146, 458))
-        cablenegro2 = pygame.transform.rotate(cablenegro, 180)
-        ventana.blit(cablenegro2, (169, 458))
+        ventana.blit(cablerojo2, (coordenada_cablerojoSup[0], coordenada_cablerojoSup[1]))
+        ventana.blit(cableazul2, (coordenada_cableazulSup[0], coordenada_cableazulSup[1]))
+        ventana.blit(cableverde2, (coordenada_cableverdeSup[0], coordenada_cableverdeSup[1]))
+        ventana.blit(cablenegro2, (coordenada_cablenegroSup[0], coordenada_cablenegroSup[1]))               
         ventana.blit(canaleta_1, coordenada_canaleta_1)
         ventana.blit(canaleta_1, coordenada_canaleta_3)
         ventana.blit(banersup, coordenada_banersup)
@@ -1183,11 +1459,11 @@ while True:
 # Marquillas del cableado   
         texto = myFont.render("Vcc", True, black)
         texto = pygame.transform.rotate(texto, 90)
-        ventana.blit(texto, coordenada_texcablerojo)
+        ventana.blit(texto, coordenada_texcablerojoInf)
         
         textognd = myFont.render("GND", True, black)
         textognd= pygame.transform.rotate(textognd, 90)
-        ventana.blit(textognd, coordenada_texcableverde)        
+        ventana.blit(textognd, coordenada_texcableverdeInf)        
 
 # Leer actividad de mouse
         mouse = pygame.mouse.get_pos()
@@ -1281,21 +1557,17 @@ while True:
         ventana.blit(plc, coordenada_plc)
         ventana.blit(multimetro, coordenada_multimetro)
         ventana.blit(bornera1, coordenada_bornera1)
-        ventana.blit(cablerojo, coordenada_cablerojo)
-        ventana.blit(cableazul, coordenada_cableazul)
-        ventana.blit(cableverde, coordenada_cableverde)
-        ventana.blit(cablenegro, coordenada_cablenegro)
+        ventana.blit(cablerojo, (coordenada_cablerojoInf[0], coordenada_cablerojoInf[1]))
+        ventana.blit(cableazul, (coordenada_cableazulInf[0], coordenada_cableazulInf[1]))
+        ventana.blit(cableverde, (coordenada_cableverdeInf[0], coordenada_cableverdeInf[1]))
+        ventana.blit(cablenegro, (coordenada_cablenegroInf[0], coordenada_cablenegroInf[1]))
         ventana.blit(banerinf, coordenada_banerinf)
         ventana.blit(fuente24, coordenada_fuente24)
     
-        cablerojo2 = pygame.transform.rotate(cablerojo, 180)
-        ventana.blit(cablerojo2, (102, 458))
-        cableazul2 = pygame.transform.rotate(cableazul, 180)
-        ventana.blit(cableazul2, (125, 458))
-        cableverde2 = pygame.transform.rotate(cableverde, 180)
-        ventana.blit(cableverde2, (146, 458))
-        cablenegro2 = pygame.transform.rotate(cablenegro, 180)
-        ventana.blit(cablenegro2, (169, 458))
+        ventana.blit(cablerojo2, (coordenada_cablerojoSup[0], coordenada_cablerojoSup[1]))
+        ventana.blit(cableazul2, (coordenada_cableazulSup[0], coordenada_cableazulSup[1]))
+        ventana.blit(cableverde2, (coordenada_cableverdeSup[0], coordenada_cableverdeSup[1]))
+        ventana.blit(cablenegro2, (coordenada_cablenegroSup[0], coordenada_cablenegroSup[1]))
         ventana.blit(canaleta_1, coordenada_canaleta_1)
         ventana.blit(canaleta_1, coordenada_canaleta_3)
         ventana.blit(banersup, coordenada_banersup)
@@ -1311,11 +1583,11 @@ while True:
 # Marquillas del cableado   
         texto = myFont.render("Vcc", True, black)
         texto = pygame.transform.rotate(texto, 90)
-        ventana.blit(texto, coordenada_texcablerojo)
+        ventana.blit(texto, coordenada_texcablerojoInf)
         
         textognd = myFont.render("GND", True, black)
         textognd= pygame.transform.rotate(textognd, 90)
-        ventana.blit(textognd, coordenada_texcableverde)
+        ventana.blit(textognd, coordenada_texcableverdeInf)
  
 #Ecuaciones de nivel        
         
