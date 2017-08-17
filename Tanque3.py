@@ -11,7 +11,8 @@ from decimal import *
 import string
 string.ascii_uppercase
 from datetime import datetime
-import checkButtons #Clase que maneja botones de selección
+import checkButtons #Clase que maneja los botones de selección
+import manejadorArchivos #Clase que maneja los archivos de texto
 import random
 
 pygame.init()
@@ -281,47 +282,51 @@ class Input:
       return ''.join(current_string)
 # Fin digitar usuario y contraseña
 
+lista_posibles_posiciones_regleta = (102, 125, 146, 169, 192, 215, 238, 260, 282, 305, 327, 350, 372, 395, 418)
+
 def posicion_cable(mouse_x):
 
     if 126 >= mouse_x >= 0:
-       return 102
+       return lista_posibles_posiciones_regleta[0]
     elif 149 >= mouse_x >= 127:
-       return 125
+       return lista_posibles_posiciones_regleta[1]
     elif 171 >= mouse_x >= 150:
-       return 146
+       return lista_posibles_posiciones_regleta[2]
     elif 194 >= mouse_x >= 172:
-       return 169
+       return lista_posibles_posiciones_regleta[3]
     elif 217 >= mouse_x >= 195:
-       return 192
+       return lista_posibles_posiciones_regleta[4]
     elif 239 >= mouse_x >= 218:
-       return 215
+       return lista_posibles_posiciones_regleta[5]
     elif 261 >= mouse_x >= 240:
-       return 238
+       return lista_posibles_posiciones_regleta[6]
     elif 284 >= mouse_x >= 262:
-       return 260
+       return lista_posibles_posiciones_regleta[7]
     elif 306 >= mouse_x >= 285:
-       return 282
+       return lista_posibles_posiciones_regleta[8]
     elif 329 >= mouse_x >= 307:
-       return 305
+       return lista_posibles_posiciones_regleta[9]
     elif 352 >= mouse_x >= 330:
-       return 327
+       return lista_posibles_posiciones_regleta[10]
     elif 374 >= mouse_x >= 353:
-       return 350
+       return lista_posibles_posiciones_regleta[11]
     elif 396 >= mouse_x >= 375:
-       return 372
+       return lista_posibles_posiciones_regleta[12]
     elif 419 >= mouse[0] >= 397:
-       return 395
+       return lista_posibles_posiciones_regleta[13]
     elif 1024 >= mouse_x >= 420:
-       return 418
+       return lista_posibles_posiciones_regleta[14]
+
+lista_posibles_posiciones_multimetro = (760, 786, 810)
 
 def posicion_cable_multimetro(mouse_x):
 
     if 784 >= mouse_x >= 0:
-       return 760
+       return lista_posibles_posiciones_multimetro[0]
     elif 811 >= mouse_x >= 785:
-       return 786
+       return lista_posibles_posiciones_multimetro[1]
     elif 844 >= mouse_x >= 812:
-       return 810
+       return lista_posibles_posiciones_multimetro[2]
     elif 894 >= mouse_x >= 845:
        return 870
     elif 1024 >= mouse_x >= 895:
@@ -605,10 +610,20 @@ while True:
                  if coordenada_bcorriente[0] + ancho_boton > mouse[0] > coordenada_bcorriente[0] and coordenada_bcorriente[1] + alto_boton > mouse[1] > coordenada_bcorriente[1]:
                     seleccion_corriente = True
                     seleccion_voltaje = False
+                    texto = "Modo Corriente Activado\n"
+                    archivo = manejadorArchivos.Archivo()
+                    archivo.abrir("Registro.txt")
+                    archivo.escribir(texto)
+                    archivo.cerrar()
                     
                  elif coordenada_bvoltaje[0] + ancho_boton > mouse[0] > coordenada_bvoltaje[0] and coordenada_bvoltaje[1] + alto_boton > mouse[1] > coordenada_bvoltaje[1]:
                     seleccion_voltaje = True
                     seleccion_corriente = False
+                    texto = "Modo Voltaje Activado\n"
+                    archivo = manejadorArchivos.Archivo()
+                    archivo.abrir("Registro.txt")
+                    archivo.escribir(texto)
+                    archivo.cerrar()
 
                  elif coordenada_cablemultimetro[0]+28 > mouse[0] > coordenada_cablemultimetro[0] and coordenada_cablemultimetro[1]+100 > mouse[1] > coordenada_cablemultimetro[1]:
 
@@ -684,6 +699,18 @@ while True:
                     
                     if nuevaposicion != coordenada_cable2multimetro[0]:
                        coordenada_cablemultimetro[0] = nuevaposicion
+
+                       if nuevaposicion in lista_posibles_posiciones_multimetro:
+                          pos = lista_posibles_posiciones_multimetro.index(nuevaposicion)+1
+                          texto = "Se movió el cable negro del multimetro a la posición " + str(pos) + "\n"
+                       else:
+                          texto = "El cable negro salió del multimetro\n"
+                                               
+                       archivo = manejadorArchivos.Archivo()
+                       archivo.abrir("Registro.txt")
+                       archivo.escribir(texto)
+                       archivo.cerrar()
+
                     else:
                        coordenada_cablemultimetro[0] = posicion_cable_multimetro(posicion_inicial_cable[0])
 
@@ -695,6 +722,18 @@ while True:
                     
                     if nuevaposicion != coordenada_cablemultimetro[0]:
                        coordenada_cable2multimetro[0] = nuevaposicion
+
+                       if nuevaposicion in lista_posibles_posiciones_multimetro:
+                          pos = lista_posibles_posiciones_multimetro.index(nuevaposicion)+1
+                          texto = "Se movió el cable rojo del multimetro a la posición " + str(pos) + "\n"
+                       else:
+                          texto = "El cable rojo salió del multimetro\n"
+                                               
+                       archivo = manejadorArchivos.Archivo()
+                       archivo.abrir("Registro.txt")
+                       archivo.escribir(texto)
+                       archivo.cerrar()
+                       
                     else:
                        coordenada_cable2multimetro[0] = posicion_cable_multimetro(posicion_inicial_cable[0])
                     
@@ -713,6 +752,14 @@ while True:
                        coordenada_cablerojoInf[0] = posicion_cable(mouse[0])
                        coordenada_texcablerojoInf[0] = posicion_cable(mouse[0]) + 3
 
+                       pos = lista_posibles_posiciones_regleta.index(nuevaposicion)+1
+                       texto = "Se movió el cable Vcc inferior a la posición " + str(pos) + "\n"
+                                             
+                       archivo = manejadorArchivos.Archivo()
+                       archivo.abrir("Registro.txt")
+                       archivo.escribir(texto)
+                       archivo.cerrar()
+
                  elif arrastrar_rojoSup:
 
                     arrastrar_rojoSup = False
@@ -726,6 +773,14 @@ while True:
                     else:
                        coordenada_cablerojoSup[0] = posicion_cable(mouse[0])
 
+                       pos = lista_posibles_posiciones_regleta.index(nuevaposicion)+1
+                       texto = "Se movió el cable superior rojo a la posición " + str(pos) + "\n"
+                                             
+                       archivo = manejadorArchivos.Archivo()
+                       archivo.abrir("Registro.txt")
+                       archivo.escribir(texto)
+                       archivo.cerrar()
+
                  elif arrastrar_azulInf:
                  
                     arrastrar_azulInf = False
@@ -738,6 +793,14 @@ while True:
                        coordenada_cableazulInf[0] = posicion_cable(posicion_inicial_cable[0])
                     else:
                        coordenada_cableazulInf[0] = posicion_cable(mouse[0])
+
+                       pos = lista_posibles_posiciones_regleta.index(nuevaposicion)+1
+                       texto = "Se movió el cable inferior azúl a la posición " + str(pos) + "\n"
+                                             
+                       archivo = manejadorArchivos.Archivo()
+                       archivo.abrir("Registro.txt")
+                       archivo.escribir(texto)
+                       archivo.cerrar()
                        
                  elif arrastrar_azulSup:
 
@@ -751,6 +814,14 @@ while True:
                        coordenada_cableazulSup[0] = posicion_cable(posicion_inicial_cable[0])
                     else:
                        coordenada_cableazulSup[0] = posicion_cable(mouse[0])
+
+                       pos = lista_posibles_posiciones_regleta.index(nuevaposicion)+1
+                       texto = "Se movió el cable superior azúl a la posición " + str(pos) + "\n"
+                                             
+                       archivo = manejadorArchivos.Archivo()
+                       archivo.abrir("Registro.txt")
+                       archivo.escribir(texto)
+                       archivo.cerrar()
 
                  elif arrastrar_verdeInf:
                  
@@ -767,6 +838,14 @@ while True:
                        coordenada_cableverdeInf[0] = posicion_cable(mouse[0])
                        coordenada_texcableverdeInf[0] = posicion_cable(mouse[0]) + 3
 
+                       pos = lista_posibles_posiciones_regleta.index(nuevaposicion)+1
+                       texto = "Se movió el cable GND inferior a la posición " + str(pos) + "\n"
+                                             
+                       archivo = manejadorArchivos.Archivo()
+                       archivo.abrir("Registro.txt")
+                       archivo.escribir(texto)
+                       archivo.cerrar()
+
                  elif arrastrar_verdeSup:
 
                     arrastrar_verdeSup = False
@@ -780,6 +859,14 @@ while True:
                     else:
                        coordenada_cableverdeSup[0] = posicion_cable(mouse[0])
 
+                       pos = lista_posibles_posiciones_regleta.index(nuevaposicion)+1
+                       texto = "Se movió el cable superior verde a la posición " + str(pos) + "\n"
+                                             
+                       archivo = manejadorArchivos.Archivo()
+                       archivo.abrir("Registro.txt")
+                       archivo.escribir(texto)
+                       archivo.cerrar()
+
                  elif arrastrar_negroInf:
                  
                     arrastrar_negroInf = False
@@ -792,6 +879,14 @@ while True:
                        coordenada_cablenegroInf[0] = posicion_cable(posicion_inicial_cable[0])
                     else:
                        coordenada_cablenegroInf[0] = posicion_cable(mouse[0])
+
+                       pos = lista_posibles_posiciones_regleta.index(nuevaposicion)+1
+                       texto = "Se movió el cable inferior negro a la posición " + str(pos) + "\n"
+                                             
+                       archivo = manejadorArchivos.Archivo()
+                       archivo.abrir("Registro.txt")
+                       archivo.escribir(texto)
+                       archivo.cerrar()
                        
                  elif arrastrar_negroSup:
 
@@ -805,6 +900,14 @@ while True:
                        coordenada_cablenegroSup[0] = posicion_cable(posicion_inicial_cable[0])
                     else:
                        coordenada_cablenegroSup[0] = posicion_cable(mouse[0])
+
+                       pos = lista_posibles_posiciones_regleta.index(nuevaposicion)+1
+                       texto = "Se movió el cable superior negro a la posición " + str(pos) + "\n"
+                                             
+                       archivo = manejadorArchivos.Archivo()
+                       archivo.abrir("Registro.txt")
+                       archivo.escribir(texto)
+                       archivo.cerrar()
    
                        
            elif evento.type == pygame.MOUSEMOTION:
@@ -1679,7 +1782,7 @@ while True:
            ayuda2 = myFont.render("de la manera correcta", True, blue)           
            ventana.blit(anuncio, (560, 500))
            ventana.blit(ayuda, (500, 540))
-           ventana.blit(ayuda2, (500, 560))
+           ventana.blit(ayuda2, (500, 560))                      
            
         if seleccion_voltaje:
            bvoltaje = pygame.draw.rect(ventana, blue, (coordenada_bvoltaje[0], coordenada_bvoltaje[1], ancho_boton, alto_boton))
@@ -1689,6 +1792,7 @@ while True:
            ventana.blit(anuncio, (560, 500))
            ventana.blit(ayuda, (500, 540))
            ventana.blit(ayuda2, (500, 560))
+           
         
 # Marquillas del cableado   
         texto = myFont.render("Vcc", True, black)

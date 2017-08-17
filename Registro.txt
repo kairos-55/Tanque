@@ -1,0 +1,9 @@
+﻿Se movió el cable negro del multimetro a la posición 3
+El cable negro salió del multimetro
+Se movió el cable Vcc inferior a la posición 6
+Se movió el cable inferior azúl a la posición 15
+Se movió el cable Vcc inferior a la posición 8
+Se movió el cable superior rojo a la posición 8
+Modo Voltaje Activado
+Modo Corriente Activado
+Modo Voltaje Activado
