@@ -141,7 +141,7 @@ animacion_tanque = False
 loop_control_cerrado = False
 pantalla_errores = False
 usuario = ""
-usuario_fallos = "p"
+usuario_fallos = "profesor"
 seleccion_fallo = False
 reproducir = False
 pausa = False
@@ -166,7 +166,7 @@ arrastrar_cablemultimetro = False
 arrastrar_cable2multimetro = False
 
 seleccion_corriente = False
-seleccion_voltaje = False
+seleccion_voltaje = True
 
 #Definir propiedades ventana principal
 ventana = pygame.display.set_mode(dimension_ventana)
@@ -425,6 +425,9 @@ alturaH = 15
 baseV = 17
 alturaV = 0
 
+colorH = black
+colorV = black
+
 ancho_boton = 16
 alto_boton = 6
 
@@ -598,6 +601,17 @@ while True:
                     reproducir = True
                     vertical = True
                     pausa = False
+
+                    if alturaV >= 50:
+                       base = 17
+                       altura = 0
+                       baseH = 0
+                       alturaH = 15
+                       baseV = 17
+                       alturaV = 0
+
+                       colorH = black
+                       colorV = black
                     
         if loop_sec_medicion:
 
@@ -1454,6 +1468,8 @@ while True:
         if reproducir:
            ventana.blit(bpausa, (850, 150))
            pygame.draw.rect(ventana, (0,162,232), (544, 465, base, altura))
+           pygame.draw.rect(ventana, colorH, (544, 144, baseH, alturaH))
+           pygame.draw.rect(ventana, colorV, (744, 144, baseV, alturaV))           
               
            if vertical:
                                 
@@ -1461,41 +1477,31 @@ while True:
                  fin = 601
                  vertical = False
                  horizontal = True
-                 
+                 colorH = (0,162,232)
               elif fin % velocidad_reproduccion == 0:
                  altura -= 20
 
               fin -= 1
 
            elif horizontal:              
-              pygame.draw.rect(ventana, (0,162,232), (544, 144, baseH, alturaH))
-           #561
+              
               if baseH >= 200:
                  horizontal = False
                  vertical2 = True
                  fin = 601
-                 
+                 colorV = (0,162,232)
               elif fin % velocidad_reproduccion == 0:
                  baseH += 20
 
               fin -= 1
 
            elif vertical2:
-              pygame.draw.rect(ventana, (0,162,232), (544, 144, baseH, alturaH))
-           
-              pygame.draw.rect(ventana, (0,162,232), (744, 144, baseV, alturaV))
-           
+              
               if alturaV >= 50:
                  reproducir = False
-                 pausa = False                 
-                 vertical2 = False
+                 pausa = True
                  fin = 601
-                 base = 17
-                 altura = 0
-                 baseH = 0
-                 alturaH = 15
-                 baseV = 17
-                 alturaV = 0
+                 
               elif fin % velocidad_reproduccion == 0:
                  alturaV += 20
 
@@ -1504,13 +1510,9 @@ while True:
         if pausa:
            
            ventana.blit(bplay, (850, 150))
-           pygame.draw.rect(ventana, (0,162,232), (544, 465, base, altura))
-
-           if horizontal:
-              pygame.draw.rect(ventana, (0,162,232), (544, 144, baseH, alturaH))
-           elif vertical2:              
-              pygame.draw.rect(ventana, (0,162,232), (544, 144, baseH, alturaH))
-              pygame.draw.rect(ventana, (0,162,232), (744, 144, baseV, alturaV))
+           pygame.draw.rect(ventana, (0,162,232), (544, 465, base, altura))           
+           pygame.draw.rect(ventana, colorH, (544, 144, baseH, alturaH))
+           pygame.draw.rect(ventana, colorV, (744, 144, baseV, alturaV))
 
            
 
@@ -1749,8 +1751,8 @@ while True:
         ventana.blit(canaleta_2, coordenada_canaleta_2)
         ventana.blit(plc, coordenada_plc)
         ventana.blit(multimetro, (coordenada_multimetro[0]-50, coordenada_multimetro[1]))
-        ventana. blit(cablenegro, coordenada_cablemultimetro)
-        ventana. blit(cablerojo, coordenada_cable2multimetro)        
+        ventana.blit(cablenegro, coordenada_cablemultimetro)
+        ventana.blit(cablerojo, coordenada_cable2multimetro)        
         ventana.blit(bornera1, coordenada_bornera1)
         ventana.blit(cablerojo, (coordenada_cablerojoInf[0], coordenada_cablerojoInf[1]))
         ventana.blit(cableazul, (coordenada_cableazulInf[0], coordenada_cableazulInf[1]))
@@ -1817,7 +1819,7 @@ while True:
         #print(mouse) 
 
         # Click botón ppal
-        if 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
+        if 250 > mouse[0] > 80 and 711 > mouse[1] > 660:
            #print(click[0])
            if click[0]:  
                 loop_ppal=True
@@ -1832,7 +1834,7 @@ while True:
                 pygame.event.clear()#Borra todos los eventos que ocurrieron hasta el momento 
                 
         # Click botón fallos
-        elif 250 > mouse[0] > 80 and 711 > mouse[1] > 660:
+        elif 470 > mouse[0] > 300 and 711 > mouse[1] > 660:
            #print(click[0])
            if click[0]:  
               if usuario == usuario_fallos:
@@ -1960,7 +1962,7 @@ while True:
         reloj.tick(fps)        
         
         
-        if usuario == "e" and clave == "e":
+        if usuario == "estudiante" and clave == "estudiante":
             loop_ppal = False
             loop_sec = True
             autenticacion = False 
@@ -1970,7 +1972,7 @@ while True:
             pantalla_errores = False
             
         
-        elif usuario == "p" and clave == "p":
+        elif usuario == "profesor" and clave == "profesor":
             loop_ppal = False
             loop_sec = False
             autenticacion = False

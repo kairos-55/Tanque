@@ -7,3 +7,5 @@ Se movió el cable superior rojo a la posición 8
 Modo Voltaje Activado
 Modo Corriente Activado
 Modo Voltaje Activado
+Modo Corriente Activado
+Modo Voltaje Activado
